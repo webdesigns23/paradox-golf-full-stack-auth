@@ -39,9 +39,9 @@ class Course(db.Model):
 
 	id = db.Column(db.integer, primary_key=True)
 	external_course_id = db.Column(db.integer)
-	name = db.Column(db.varchar)
-	city = db.Column(db.varchar)
-	state = db.Column(db.varchar)
+	name = db.Column(db.string)
+	city = db.Column(db.string)
+	state = db.Column(db.string)
 	par_total = db.Column(db.integer)
 	total_yards =db.Column(db.integer)
 	holes = db.Column(db.integer)
@@ -70,7 +70,7 @@ class Round(db.Model):
 	user_id = db.Column(db.integer, foreign_key=True)
 	course_id = db.Column(db.integer, foreign_key=True)
 	date = db.Column(db.date)
-	tee_box = db.Column(db.varchar)
+	tee_box = db.Column(db.string)
 	notes = db.Column(db.text)
 
 	def __repr__(self):
@@ -95,12 +95,12 @@ class Challenge(db.Model):
 
 	id = db.Column(db.integer, primary_key=True)
 	user_id = db.Column(db.integer, foreign_key=True)
-	title = db.Column(db.varchar)
-	type = db.Column(db.varchar)
+	title = db.Column(db.string)
+	type = db.Column(db.string)
 	target_number = db.Column(db.integer)
 	start_date = db.Column(db.date)
 	end_date = db.Column(db.date)
-	status = db.Column(db.varchar)
+	status = db.Column(db.string)
 
 	def __repr__(self):
 		return f'<Challenge: {self.title}, {self.type}, {self.target_number}, {self.start_date}, {self.end_date}, {self.status}'
