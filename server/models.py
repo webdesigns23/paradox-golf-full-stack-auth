@@ -66,11 +66,41 @@ class CourseHole(db.Model):
 class Round(db.Model):
 	__tablename__ = 'rounds'
 
+	id = db.Column(db.integer, primary_key=True)
+	user_id = db.Column(db.integer, foreign_key=True)
+	course_id = db.Column(db.integer, foreign_key=True)
+	date = db.Column(db.date)
+	tee_box = db.Column(db.varchar)
+	notes = db.Column(db.text)
+
 	def __repr__(self):
-		return f'<User: {self}, {self}>'
+		return f'<Round: {self.date}, {self.tee_box}, {self.notes}>'
 	
 class RoundHole(db.Model):
 	__tablename__ = 'round-holes'
 
+	id = db.Column(db.integer, primary_key=True)
+	round_id = db.Column(db.integer, foreign_key=True)
+	course_hole_id = db.Column(db.integer, foreign_key=True)
+	hole_number = db.Column(db.integer)
+	start_distance = db.Column(db.integer)
+	surface = db.Column(db.integer)
+	penalty = db.Column(db.integer)
+
 	def __repr__(self):
-		return f'<User: {self}, {self}>'
+		return f'<Round Hole: {self.hole_number}, {self.start_distance}, {self.surface}, {self.penalty}>'
+	
+class Challenge(db.Model):
+	__tablename__ = 'challenges'
+
+	id = db.Column(db.integer, primary_key=True)
+	user_id = db.Column(db.integer, foreign_key=True)
+	title = db.Column(db.varchar)
+	type = db.Column(db.varchar)
+	target_number = db.Column(db.integer)
+	start_date = db.Column(db.date)
+	end_date = db.Column(db.date)
+	status = db.Column(db.varchar)
+
+	def __repr__(self):
+		return f'<Challenge: {self.title}, {self.type}, {self.target_number}, {self.start_date}, {self.end_date}, {self.status}'
