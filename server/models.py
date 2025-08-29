@@ -32,3 +32,45 @@ class User(db.Model):
 
 	def __repr__(self):
 		return f'<User: {self.display_name}, {self.username}>'
+	
+	
+class Course(db.Model):
+	__tablename__ = 'courses'
+
+	id = db.Column(db.integer, primary_key=True)
+	external_course_id = db.Column(db.integer)
+	name = db.Column(db.varchar)
+	city = db.Column(db.varchar)
+	state = db.Column(db.varchar)
+	par_total = db.Column(db.integer)
+	total_yards =db.Column(db.integer)
+	holes = db.Column(db.integer)
+	course_rating = db.Column(db.float)
+	slope_rating = db.Column(db.float)
+
+	def __repr__(self):
+		return f'<Course: {self.name}, {self.city}, {self.state}, {self.par_total}, {self.total_yards}, {self.holes}, {self.course_rating}, {self.slope_rating}>'
+	
+class CourseHole(db.Model):
+	__tablename__ = 'course-holes'
+
+	id = db.Column(db.integer, primary_key=True)
+	course_id = db.Column(db.integer, foreign_key=True)
+	course_hole_number = db.Column(db.integer)
+	par = db.Column(db.integer)
+	yardage = db.Column(db.integer)
+
+	def __repr__(self):
+		return f'<Course Hole: {self.course_hole_number}, {self.par}, {self.yardage}>'
+	
+class Round(db.Model):
+	__tablename__ = 'rounds'
+
+	def __repr__(self):
+		return f'<User: {self}, {self}>'
+	
+class RoundHole(db.Model):
+	__tablename__ = 'round-holes'
+
+	def __repr__(self):
+		return f'<User: {self}, {self}>'
