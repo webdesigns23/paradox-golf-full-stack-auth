@@ -13,7 +13,7 @@ class User(db.Model):
 
 	#relationship
 	rounds = db.relationship("Round", back_populates = "user", cascade="all, delete-orphan")
-	challenge = db.relationship("Challenge", back_populates = "user", cascade="all, delete-orphan")
+	challenges = db.relationship("Challenge", back_populates = "user", cascade="all, delete-orphan")
 	
 	@validates('username')
 	def nomalize_username(self, key, value):
@@ -70,7 +70,7 @@ class CourseHole(db.Model):
 
 	#relationship
 	courses = db.relationship("Course", back_populates="course_holes")
-	round_holes = db.relationship("RoundHole", back_populates="course_hole")
+	round_holes = db.relationship("RoundHole", back_populates="course_holes")
 
 	def __repr__(self):
 		return f'<Course Hole: {self.course_hole_number}, {self.par}, {self.yardage}>'
@@ -99,7 +99,7 @@ class RoundHole(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	hole_number = db.Column(db.Integer)
 	start_distance = db.Column(db.Integer)
-	surface = db.Column(db.Integer)
+	surface = db.Column(db.String)
 	penalty = db.Column(db.Integer, default=0)
 	round_id = db.Column(db.Integer, db.ForeignKey("rounds.id", ondelete="CASCADE"), nullable=False)
 	course_hole_id = db.Column(db.Integer, db.ForeignKey("course_hole.id"), nullable=False)
