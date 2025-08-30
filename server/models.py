@@ -1,5 +1,6 @@
 from sqlalchemy.orm import validates
 from sqlalchemy.ext.hybrid import hybrid_property
+from datetime import date
 
 from config import db, bcrypt
 
@@ -7,7 +8,7 @@ class User(db.Model):
 	__tablename__ = 'users'
 
 	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Columnt(db.String, nullable=False)
+	first_name = db.Column(db.String, nullable=False)
 	username = db.Column(db.String, unique=True, nullable=False)
 	_password_hash = db.Column(db.String, nullable=False)
 
@@ -69,8 +70,8 @@ class CourseHole(db.Model):
 	course_id = db.Column(db.Integer, db.ForeignKey("courses.id", ondelete="CASCADE"), nullable=False)
 
 	#relationship
-	courses = db.relationship("Course", back_populates="course_holes")
-	round_holes = db.relationship("RoundHole", back_populates="course_holes")
+	course = db.relationship("Course", back_populates="course_holes")
+	round_holes = db.relationship("RoundHole", back_populates="course_hole")
 
 	def __repr__(self):
 		return f'<Course Hole: {self.course_hole_number}, {self.par}, {self.yardage}>'
@@ -79,16 +80,16 @@ class Round(db.Model):
 	__tablename__ = 'rounds'
 
 	id = db.Column(db.Integer, primary_key=True)
-	date = db.Column(db.Date, nullable=False)
+	date = db.Column(db.Date, default=date.today,nullable=False)
 	tee_box = db.Column(db.String)
 	notes = db.Column(db.Text)
-	user_id = db.Column(db.Integer, db.ForeignKey("users.id", nullable=False))
-	course_id = db.Column(db.Integer, db.ForeignKey("courses.id", nullable=False))
+	user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+	course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
 
 	#relationship
 	user = db.relationship("User", back_populates="rounds")
 	course = db.relationship("Course", back_populates="rounds")
-	round_holes = db.relationship("RoundHole", back_populates="rounds", cascade="all, delete-orphan")
+	round_holes = db.relationship("RoundHole", back_populates="round", cascade="all, delete-orphan")
 
 	def __repr__(self):
 		return f'<Round: {self.date}, {self.tee_box}, {self.notes}>'
@@ -102,7 +103,7 @@ class RoundHole(db.Model):
 	surface = db.Column(db.String)
 	penalty = db.Column(db.Integer, default=0)
 	round_id = db.Column(db.Integer, db.ForeignKey("rounds.id", ondelete="CASCADE"), nullable=False)
-	course_hole_id = db.Column(db.Integer, db.ForeignKey("course_hole.id"), nullable=False)
+	course_hole_id = db.Column(db.Integer, db.ForeignKey("course_holes.id"), nullable=False)
 
 	#relationship
 	round = db.relationship("Round", back_populates="round_holes")
@@ -127,4 +128,4 @@ class Challenge(db.Model):
 	user = db.relationship("User", back_populates="challenges")
 
 	def __repr__(self):
-		return f'<Challenge: {self.title}, {self.type}, {self.target_number}, {self.start_date}, {self.end_date}, {self.status}'
+		return f'<Challenge: {self.title}, {self.type}, {self.target_number}, {self.start_date}, {self.end_date}, {self.status}>'
