@@ -17,7 +17,7 @@ class User(db.Model):
 	challenges = db.relationship("Challenge", back_populates = "user", cascade="all, delete-orphan")
 	
 	@validates('username')
-	def nomalize_username(self, key, value):
+	def normalize_username(self, key, value):
 		return value.strip().lower()
 
 	@hybrid_property
