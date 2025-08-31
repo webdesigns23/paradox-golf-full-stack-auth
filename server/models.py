@@ -42,8 +42,8 @@ class Round(db.Model):
 	__tablename__ = 'rounds'
 
 	id = db.Column(db.Integer, primary_key=True)
-	course_name = db.Column(db.String)
-	course_external_id = (db.Integer)
+	course_name = db.Column(db.String, nullable=False)
+	course_external_id = db.Column(db.Integer)
 	date = db.Column(db.Date, nullable=False)
 	tee = db.Column(db.String)
 	tee_name = db.Column(db.String)
@@ -82,7 +82,7 @@ class Shot(db.Model):
 	__tablename__ = 'shots'
 
 	id = db.Column(db.Integer, primary_key=True)
-	stroke_number = (db.Integer)	
+	stroke_number = db.Column(db.Integer)	
 	start_distance = db.Column(db.Integer)
 	unit = db.Column(db.String)
 	surface = db.Column(db.String)
