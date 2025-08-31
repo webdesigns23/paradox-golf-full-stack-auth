@@ -8,7 +8,7 @@ class User(db.Model):
 	__tablename__ = 'users'
 
 	id = db.Column(db.Integer, primary_key=True)
-	first_name = db.Column(db.String, nullable=False)
+	display_name = db.Column(db.String, nullable=False)
 	username = db.Column(db.String, unique=True, nullable=False)
 	_password_hash = db.Column(db.String, nullable=False)
 
@@ -35,83 +35,69 @@ class User(db.Model):
 			self._password_hash, password.encode('utf-8'))
 
 	def __repr__(self):
-		return f'<User: {self.first_name}, {self.username}>'
+		return f'<User: {self.display_name}, {self.username}>'
 	
-	
-class Course(db.Model):
-	__tablename__ = 'courses'
-
-	id = db.Column(db.Integer, primary_key=True)
-	external_course_id = db.Column(db.Integer)
-	name = db.Column(db.String)
-	city = db.Column(db.String)
-	state = db.Column(db.String)
-	par_total = db.Column(db.Integer)
-	total_yards = db.Column(db.Integer)
-	holes = db.Column(db.Integer)
-	course_rating = db.Column(db.Float)
-	slope_rating = db.Column(db.Float)
-
-	#relationship
-	course_holes = db.relationship("CourseHole", back_populates="course", cascade="all, delete-orphan")
-	rounds = db.relationship("Round", back_populates="course")
-
-
-	def __repr__(self):
-		return f'<Course: {self.name}, {self.city}, {self.state}, {self.par_total}, {self.total_yards}, {self.holes}, {self.course_rating}, {self.slope_rating}>'
-	
-class CourseHole(db.Model):
-	__tablename__ = 'course_holes'
-
-	id = db.Column(db.Integer, primary_key=True)
-	course_hole_number = db.Column(db.Integer, nullable=False)
-	par = db.Column(db.Integer, nullable=False)
-	yardage = db.Column(db.Integer, nullable=False)
-	course_id = db.Column(db.Integer, db.ForeignKey("courses.id", ondelete="CASCADE"), nullable=False)
-
-	#relationship
-	course = db.relationship("Course", back_populates="course_holes")
-	round_holes = db.relationship("RoundHole", back_populates="course_hole")
-
-	def __repr__(self):
-		return f'<Course Hole: {self.course_hole_number}, {self.par}, {self.yardage}>'
 	
 class Round(db.Model):
 	__tablename__ = 'rounds'
 
 	id = db.Column(db.Integer, primary_key=True)
-	date = db.Column(db.Date, default=date.today,nullable=False)
-	tee_box = db.Column(db.String)
+	course_name = db.Column(db.String)
+	course_external_id = (db.Integer)
+	date = db.Column(db.Date, nullable=False)
+	tee = db.Column(db.String)
+	tee_name = db.Column(db.String)
+	holes = db.Column(db.String)
 	notes = db.Column(db.Text)
-	user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
-	course_id = db.Column(db.Integer, db.ForeignKey("courses.id"), nullable=False)
+
+	user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"))
+	
 
 	#relationship
 	user = db.relationship("User", back_populates="rounds")
-	course = db.relationship("Course", back_populates="rounds")
-	round_holes = db.relationship("RoundHole", back_populates="round", cascade="all, delete-orphan")
+	round_holes = db.relationship("RoundHole", back_populates="round", cascade="all, delete-orphan", order_by="RoundHole.hole_number")
 
 	def __repr__(self):
-		return f'<Round: {self.date}, {self.tee_box}, {self.notes}>'
+		return f'<Round: {self.date}, {self.tee}, {self.tee_name}, {self.holes}, {self.notes}>'
 	
 class RoundHole(db.Model):
 	__tablename__ = 'round_holes'
 
 	id = db.Column(db.Integer, primary_key=True)
-	hole_number = db.Column(db.Integer)
-	start_distance = db.Column(db.Integer)
-	surface = db.Column(db.String)
-	penalty = db.Column(db.Integer, default=0)
+	hole_number = db.Column(db.Integer, nullable=False)
+	par = db.Column(db.Integer)
+	score = db.Column(db.Integer)
+
 	round_id = db.Column(db.Integer, db.ForeignKey("rounds.id", ondelete="CASCADE"), nullable=False)
-	course_hole_id = db.Column(db.Integer, db.ForeignKey("course_holes.id"), nullable=False)
 
 	#relationship
 	round = db.relationship("Round", back_populates="round_holes")
-	course_hole = db.relationship("CourseHole", back_populates="round_holes")
+	shots = db.relationship("Shot", back_populates="round_hole", cascade="all, delete-orphan", order_by="Shot.stroke_number")
+	
+	def __repr__(self):
+		return f'<Round Hole: {self.hole_number}, {self.par}, {self.score}>'
+	
+
+class Shot(db.Model):
+	__tablename__ = 'shots'
+
+	id = db.Column(db.Integer, primary_key=True)
+	stroke_number = (db.Integer)	
+	start_distance = db.Column(db.Integer)
+	unit = db.Column(db.String)
+	surface = db.Column(db.String)
+	penalty = db.Column(db.Integer, default=0)
+	club = db.Column(db.String)
+	notes = db.Column(db.Text)
+
+	round_hole_id = db.Column(db.Integer, db.ForeignKey("round_holes.id", ondelete="CASCADE"), nullable=False)
+
+	#relationship
+	round_hole = db.relationship("RoundHole", back_populates="shots")
 
 	def __repr__(self):
-		return f'<Round Hole: {self.hole_number}, {self.start_distance}, {self.surface}, {self.penalty}>'
-	
+		return f'<Shot: {self.stroke_number}, {self.start_distance}, {self.unit}, {self.surface}, {self.penalty}, {self.club}, {self.notes}>'
+
 class Challenge(db.Model):
 	__tablename__ = 'challenges'
 
@@ -122,6 +108,7 @@ class Challenge(db.Model):
 	start_date = db.Column(db.Date)
 	end_date = db.Column(db.Date)
 	status = db.Column(db.String)
+
 	user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
 
 	#relationship
