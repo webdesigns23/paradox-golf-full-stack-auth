@@ -25,7 +25,7 @@ class RoundSchema(Schema):
 	
 	#relationship
 	user = fields.Nested(lambda: UserSchema(exclude=("rounds","challenges")),dump_only=True)
-	round_holes = fields.Nested(lambda: RoundHoleSchema(exclude=("rounds",)), many=True, dump_only=True)
+	round_holes = fields.Nested(lambda: RoundHoleSchema(exclude=("round",)), many=True, dump_only=True)
 	
 class RoundHoleSchema(Schema):
 	id = fields.Integer(dump_only=True)
@@ -36,8 +36,8 @@ class RoundHoleSchema(Schema):
 	round_id = fields.Integer(required=True, load_only=True)
 
 	#relationship
-	round = fields.Nested(lambda: RoundSchema(exclude=("round_holes",)),dump_only=True)
-	shots = fields.Nested(lambda: ShotSchema(exclude=("round_holes",)),many=True, dump_only=True)
+	round = fields.Nested(lambda: RoundSchema(exclude=("round_hole",)),dump_only=True)
+	shots = fields.Nested(lambda: ShotSchema(exclude=("round_hole",)),many=True, dump_only=True)
 
 
 class ShotSchema(Schema):

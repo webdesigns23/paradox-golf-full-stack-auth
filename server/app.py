@@ -17,7 +17,7 @@ from schema import *
 #     if (request.endpoint) not in open_access_list and (not verify_jwt_in_request()):
 #         return {'error': '401 Unauthorized'}, 401
 
-# Resources
+#User Auth Routes
 class Signup(Resource):
     def post(self):
         data = request.get_json() or {}
@@ -35,7 +35,7 @@ class Signup(Resource):
             db.session.add(user)
             db.session.commit()
 
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(identity=str(user.id))
             return make_response(
                 jsonify(token=access_token, user=UserSchema().dump(user)),200)
         
@@ -46,7 +46,7 @@ class Signup(Resource):
 class WhoAmI(Resource):
     @jwt_required()
     def get(self):
-        user_id = get_jwt_identity()
+        user_id = int(get_jwt_identity())
         user = User.query.filter_by(id=user_id).first()
         return UserSchema().dump(user), 200
     
@@ -59,16 +59,49 @@ class Login(Resource):
         user = User.query.filter_by(username=username).first()
 
         if user and user.authenticate(password):
-            access_token = create_access_token(identity=user.id)
+            access_token = create_access_token(identity=str(user.id))
             return make_response(jsonify(token=access_token, user=UserSchema().dump(user)), 200)
         
         return {'error': ['401 Unauthorized']}, 401
+
+#User Round Routes
+class RoundIndex(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = int(get_jwt_identity())
+        rounds = Round.query.filter_by(user_id=user_id).all()
+        return [RoundSchema().dump(r) for r in rounds], 200
+    
+    @jwt_required()
+    def post(self):
+        data = request.get_json() or {}
+        user_id = int(get_jwt_identity())
+
+        new_round = Round(
+            user_id = user_id,
+            course_name = data.get('course_name'),
+            course_external_id = data.get('course_external_id'),
+            date = data.get('date'),
+            tee = data.get('tee'),
+            tee_name = data.get('tee_name'),
+            holes = data.get('holes'),
+            notes = data.get('notes'),
+        )
+
+        try:
+            db.session.add(new_round)
+            db.session.commit()
+            return RoundSchema().dump(round), 201
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': ['422 Unable to proccess']}, 422
+
 
 # API Endpoints
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(WhoAmI, '/me', endpoint='me')
 api.add_resource(Login, '/login', endpoint='login')
-
+api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
