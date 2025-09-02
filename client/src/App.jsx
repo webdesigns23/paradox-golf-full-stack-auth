@@ -3,6 +3,13 @@ import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import Home from './pages/Home';
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import Courses from "./pages/Courses";
+import Rounds from "./pages/Rounds";
+import RoundDetails from "./components/RoundFeatures/RoundDetails"
+import Stats from "./pages/Stats";
+import Challenges from "./pages/Challenges";
+import NavBar from "./components/NavBar";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -30,8 +37,15 @@ export default function App() {
   return (
     <>
       <BrowserRouter>
+      <NavBar />
         <Routes>
           <Route path="/" element={<Home/>} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/courses" element={<Courses />} />
+          <Route path="/rounds" element={<Rounds />} />
+          <Route path="/rounds/:id" element={<RoundDetails />} />
+          <Route path="/stats" element={<Stats />} />
+          <Route path="/challenges" element={<Challenges />} />
         </Routes>
       </BrowserRouter>
     </>
