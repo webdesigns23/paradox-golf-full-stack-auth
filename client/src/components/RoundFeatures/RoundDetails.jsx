@@ -1,6 +1,8 @@
 
-export default function RoundDetails(){
+export default function RoundDetails() {
 	return(
-		<h1>Round Details Page</h1>
+		<>
+		<h1>Round Holes</h1>
+		</>
 	)
 }

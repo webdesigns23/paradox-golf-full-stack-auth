@@ -1,4 +1,4 @@
-
+import RoundDetails from "./RoundDetails"
 
 export default function RoundCard({round}){
 	
@@ -11,6 +11,9 @@ export default function RoundCard({round}){
 			<h2>{round.tee_name} Tees</h2>	
 			<p>{round.holes}</p>
 			<p>Notes: {round.notes}</p>		
+			<button>
+				Round Details
+			</button>
 		</div>
 	)
 }
