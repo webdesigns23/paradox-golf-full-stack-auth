@@ -84,7 +84,7 @@ class RoundIndex(Resource):
         try:
             db.session.add(new_round)
             db.session.commit()
-            return RoundSchema().dump(round), 201
+            return RoundSchema().dump(new_round), 201
         except IntegrityError:
             db.session.rollback()
             return {'error': ['422 Unable to proccess']}, 422
@@ -176,9 +176,11 @@ class ShotIndex(Resource):
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(WhoAmI, '/me', endpoint='me')
 api.add_resource(Login, '/login', endpoint='login')
+
 api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
-api.add_resource(RoundHoleIndex, '/rounds/<int:round_id/holes')
-api.add_resource(ShotIndex, '/rounds/<int:round_id>/holes/<int:hole_id>/shots')
+api.add_resource(RoundHoleIndex, '/rounds/<int:round_id>/holes', endpoint='round_holes')
+
+api.add_resource(ShotIndex, '/rounds/<int:round_hole_id>/shots', endpoint='shots')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
