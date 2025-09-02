@@ -96,7 +96,7 @@ class RoundHoleIndex(Resource):
         user_id = int(get_jwt_identity())
         round_info = Round.query.filter_by(id=round_id, user_id=user_id).first()
         if not round_info:
-            return {"error": ["Round not found"]}, 404
+            return {'error': ['Round not found']}, 404
         
         return [RoundHoleSchema().dump(rh) for rh in round_info.round_holes], 200
     
@@ -105,7 +105,7 @@ class RoundHoleIndex(Resource):
         user_id = int(get_jwt_identity())
         round_info = Round.query.filter_by(id=round_id, user_id=user_id).first()
         if not round_info:
-            return {"error": ["Round not found"]}, 404
+            return {'error': ['Round not found']}, 404
         
         data = request.get_json() or {}
         new_hole = RoundHole(
@@ -126,34 +126,50 @@ class RoundHoleIndex(Resource):
 #Shot Routes
 class ShotIndex(Resource):
     @jwt_required()
-    def get(self):
-        user_id = int(get_jwt_identity())
-        rounds = Round.query.filter_by(user_id=user_id).all()
-        return [RoundSchema().dump(r) for r in rounds], 200
-    
-    @jwt_required()
-    def post(self):
-        data = request.get_json() or {}
+    def get(self, round_id, hole_id):
         user_id = int(get_jwt_identity())
 
+        round_info = Round.query.filter_by(id=round_id, user_id=user_id).first()
+        if not round_info:
+            return {'error': ['Round not found']}, 404
+        
+        hole = RoundHole.query.filter_by(id=hole_id, round_id=round_info.id).first()
+        if not hole:
+            return {'error': ['Hole not found']}, 404
+        return [ShotSchema().dump(s) for s in hole.shots], 200
+    
+    @jwt_required()
+    def post(self, round_id, hole_id):
+        user_id = int(get_jwt_identity())
+
+        round_info = Round.query.filter_by(id=round_id, user_id=user_id).first()
+        if not round_info:
+            return {'error': ['Round not found']}, 404
+        
+        hole = RoundHole.query.filter_by(id=hole_id, round_id=round_info.id).first()
+        if not hole:
+            return {'error': ['Hole not found']}, 404
+        
+        data = request.get_json() or {}
         new_shot = Shot(
-            user_id = user_id,
-            course_name = data.get('course_name'),
-            course_external_id = data.get('course_external_id'),
-            date = data.get('date'),
-            tee = data.get('tee'),
-            tee_name = data.get('tee_name'),
-            holes = data.get('holes'),
+            round_hole_id=hole.id,
+            stroke_number = data.get('stroke_number'),
+            start_distance = data.get('start_distance'),
+            unit = data.get('unit'),
+            surface = data.get('surface'),
+            penalty = data.get('penalty', 0),
+            club = data.get('club'),
             notes = data.get('notes'),
         )
 
         try:
             db.session.add(new_shot)
             db.session.commit()
-            return ShotSchema().dump(round), 201
+            return ShotSchema().dump(new_shot), 201
         except IntegrityError:
             db.session.rollback()
-            return {'error': ['422 Unable to proccess']}, 422
+            return {'error': ['422 Unable to add shots']}, 422
+      
 
 
 # API Endpoints
@@ -161,7 +177,8 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(WhoAmI, '/me', endpoint='me')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
-api.add_resource(ShotIndex, '/shots', endpoint="shots")
+api.add_resource(RoundHoleIndex, '/rounds/<int:round_id/holes')
+api.add_resource(ShotIndex, '/rounds/<int:round_id>/holes/<int:hole_id>/shots')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
