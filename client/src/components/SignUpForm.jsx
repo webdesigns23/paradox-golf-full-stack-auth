@@ -39,9 +39,6 @@ export default function SignUpForm({onLogin}) {
 		}
 	}
 
-
-
-
 	return(
 		<form className="signup_form" onSubmit={handleSignup}>
 			<div className="form_field">
