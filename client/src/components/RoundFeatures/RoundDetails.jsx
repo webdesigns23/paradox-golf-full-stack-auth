@@ -4,14 +4,17 @@ import useRoundHoles from "../../hooks/useRoundHoles"
 export default function RoundDetails() {
 
 	const {id} = useParams();
-	const {holes, loading, error} = useRoundHoles(id);
+	const {holes, loading, error, totalStrokes} = useRoundHoles(id);
 
 	if (loading) return <p>Loading…</p>;
 	if (error) return <p>Error: {error}</p>;
 
 	return(
 		<>
+		<Link to="/rounds"> Go Back to Rounds</Link>
 		<h1>Round Hole Details</h1>
+		{/* Round Score */}
+		<h2>Shot {totalStrokes}</h2>
 
 		{holes.length === 0 ? (
 			<p>No hole data yet.</p>
