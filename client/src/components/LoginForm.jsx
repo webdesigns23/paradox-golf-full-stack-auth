@@ -21,7 +21,7 @@ export default function LoginForm({onLogin}) {
 				throw new Error(`${response.status}`);
 			}
 			const data = await response.json();
-			onLogin(data.token, data.user);
+			onLogin?.(data.token, data.user);
 		} catch (error) {
 			console.error("Login request failed:", error)
 			setError(`Login request failed: ${error.message}`);
@@ -47,7 +47,7 @@ export default function LoginForm({onLogin}) {
 			<div className="form_field">
 				<label> Password:
 					<input 
-					type="text" 
+					type="password" 
 					placeholder="password" 
 					value={password}
 					onChange={(e) =>setPassword(e.target.value)} 
