@@ -18,6 +18,8 @@ export default function NavBar({user, setUser}){
 	return(
 		<nav className="navbar">
 		<img src={logo} width="100%" alt="meeseeks on golf course"/>
+		
+		<h2>welcome {user?.username}</h2>
 
 		<ul className="nav-links">
 			<NavLink to="/">Home</NavLink>
@@ -26,10 +28,10 @@ export default function NavBar({user, setUser}){
 			<NavLink to="/rounds">Rounds</NavLink>
 			<NavLink to="/stats">Stats</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
-
-       		<button variant="outline" onClick={handleLogout}>
-				Logout
-			</button>
+		<button variant="outline" onClick={handleLogout}>
+			Logout
+		</button>
+       		
 		</ul>
     </nav>
 	)
