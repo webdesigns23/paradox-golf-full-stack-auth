@@ -38,7 +38,7 @@ export default function App() {
   return (
     <RoundsProvider>
       <BrowserRouter>
-      <NavBar />
+      <NavBar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home/>} />
           <Route path="/dashboard" element={<Dashboard />} />

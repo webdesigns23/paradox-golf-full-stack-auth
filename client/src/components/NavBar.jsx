@@ -3,7 +3,18 @@ import {NavLink} from "react-router-dom";
 import "../styles/NavBar.css"
 import logo from "../assets/images/logo1.png"
 
-export default function NavBar(){
+export default function NavBar({user, setUser}){
+
+	function handleLogout() {
+    fetch("/logout", { method: "DELETE" }).then((r) => {
+      if (r.ok) {
+        setUser(null);
+      }
+    });
+    localStorage.removeItem("token");
+    setUser(null);
+  }
+
 	return(
 		<nav className="navbar">
 		<img src={logo} width="100%" alt="meeseeks on golf course"/>
@@ -15,7 +26,10 @@ export default function NavBar(){
 			<NavLink to="/rounds">Rounds</NavLink>
 			<NavLink to="/stats">Stats</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
-			
+
+       		<button variant="outline" onClick={handleLogout}>
+				Logout
+			</button>
 		</ul>
     </nav>
 	)

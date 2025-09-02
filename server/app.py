@@ -10,13 +10,6 @@ from models import *
 from schema import *
 
 
-# # Protected Routes
-# @app.before_request
-# def check_if_logged_in():
-#     open_access_list = ['signup', 'login']
-#     if (request.endpoint) not in open_access_list and (not verify_jwt_in_request()):
-#         return {'error': '401 Unauthorized'}, 401
-
 #User Auth Routes
 class Signup(Resource):
     def post(self):
@@ -64,7 +57,7 @@ class Login(Resource):
         
         return {'error': ['401 Unauthorized']}, 401
 
-#User Round Routes
+#Round Routes
 class RoundIndex(Resource):
     @jwt_required()
     def get(self):
@@ -95,6 +88,38 @@ class RoundIndex(Resource):
         except IntegrityError:
             db.session.rollback()
             return {'error': ['422 Unable to proccess']}, 422
+        
+#Shot Routes
+class ShotIndex(Resource):
+    @jwt_required()
+    def get(self):
+        user_id = int(get_jwt_identity())
+        rounds = Round.query.filter_by(user_id=user_id).all()
+        return [RoundSchema().dump(r) for r in rounds], 200
+    
+    @jwt_required()
+    def post(self):
+        data = request.get_json() or {}
+        user_id = int(get_jwt_identity())
+
+        new_shot = Shot(
+            user_id = user_id,
+            course_name = data.get('course_name'),
+            course_external_id = data.get('course_external_id'),
+            date = data.get('date'),
+            tee = data.get('tee'),
+            tee_name = data.get('tee_name'),
+            holes = data.get('holes'),
+            notes = data.get('notes'),
+        )
+
+        try:
+            db.session.add(new_shot)
+            db.session.commit()
+            return ShotSchema().dump(round), 201
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': ['422 Unable to proccess']}, 422
 
 
 # API Endpoints
@@ -102,6 +127,7 @@ api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(WhoAmI, '/me', endpoint='me')
 api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
+api.add_resource(ShotIndex, '/shots', endpoint="shots")
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
