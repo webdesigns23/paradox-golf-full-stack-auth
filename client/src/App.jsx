@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import { RoundsProvider } from "./context/RoundContext";
 import Home from './pages/Home';
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
@@ -35,7 +36,7 @@ export default function App() {
   if (!user) return <Login onLogin={onLogin}/>;
 
   return (
-    <>
+    <RoundsProvider>
       <BrowserRouter>
       <NavBar />
         <Routes>
@@ -48,7 +49,7 @@ export default function App() {
           <Route path="/challenges" element={<Challenges />} />
         </Routes>
       </BrowserRouter>
-    </>
+    </RoundsProvider>
   )
 }
 
