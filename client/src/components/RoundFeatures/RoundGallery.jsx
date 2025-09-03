@@ -4,20 +4,19 @@ import RoundCard from "./RoundCard";
 
 
 export default function RoundGallery(){
-	const {rounds, loading, error} = useContext(RoundContext);
-
-	
+	const {rounds, loading, error, deleteRound} = useContext(RoundContext);
 
 	if (loading) return <p>Loading...</p>
 	if (error) return <p>Error: {error}</p>
-
 
 	return(
 		<>
 			{rounds.map(round =>(
 				<div key={round.id}
 				className="gallery-item">
-					<RoundCard round={round} handleDelete={deleteRound}/>
+					<RoundCard 
+					round={round} h
+					handleDelete={() => deleteRound(round.id)}/>
 				</div>
 			))}
 		</>

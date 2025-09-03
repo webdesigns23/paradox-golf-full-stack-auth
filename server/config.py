@@ -18,6 +18,10 @@ app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 
 app.json.compact = False
 
+#GolfCourseAPI
+GOLFCOURSE_API_BASE = "https://api.golfcourseapi.com/v1"
+GOLFCOURSE_API_KEY = os.getenv("GOLFCOURSE_API_KEY", "")
+
 # So front can talk to back with React
 CORS(app, origins=["http://localhost:5173", "http://127.0.0.1:5173"],
 	allow_headers=["Content-Type", "Authorization"],

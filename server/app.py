@@ -5,8 +5,9 @@ from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
 from datetime import datetime
+import requests
 
-from config import app, db, api, jwt
+from config import app, db, api, jwt, GOLFCOURSE_API_BASE, GOLFCOURSE_API_KEY
 from models import *
 from schema import *
 
@@ -92,34 +93,34 @@ class RoundIndex(Resource):
 
 class RoundDetails(Resource):
     @jwt_required()
-    def patch(self, id):
-        user_id = int(get_jwt_identity())
-        round = Round.query.filter_by(id = id, user_id=user_id).first()
+    def get(self):
+        # accept either ?q=... or ?query=...
+        q = (request.args.get("q") or request.args.get("query") or "").strip()
+        if not q:
+            return {"results": [], "total": 0}, 200
 
-        if not round: 
-            return {'error': ['No rounds found']}, 404
-        
-        data = request.get_json() or {}
-
-        updatesAllowed = {'course_name', 'course_external_id', 'date', 'tee', 'tee_name', 'holes', 'notes'}
-
-        for key in updatesAllowed:
-            if key in data and data[key] is not None:
-                if key == 'date':
-                    try:
-                        round.date = datetime.strptime(data['date'], "%m/%d/%Y").date()
-                    except ValueError:
-                        return {'error': ['Invalid date format. Use MM/DD/YYYY.']}, 400
-                else:
-                    setattr(round, key, data[key])
+        url = f"{GOLFCOURSE_API_BASE}/search"
+        headers = {
+            "Authorization": f"Key {GOLFCOURSE_API_KEY}",
+            "Accept": "application/json",
+        }
 
         try:
-            db.session.commit()
-        except IntegrityError:
-            db.session.rollback()
-            return {'error': ['422 Unable to process']}, 422
+            resp = requests.get(url, params={"search_query": q}, headers=headers, timeout=10)
+            resp.raise_for_status()
+            data = resp.json() if resp.content else {}
 
-        return RoundSchema().dump(round), 200
+            # normalize common shapes
+            results = data.get("results") or data.get("data") or (data if isinstance(data, list) else [])
+            total = data.get("total") or (len(results) if isinstance(results, list) else 0)
+            return {"results": results, "total": total}, 200
+
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 502
+            body = e.response.text[:300] if e.response is not None else ""
+            return {"error": "Upstream error", "status": status, "body": body}, 502
+        except Exception as e:
+            return {"error": f"Server error: {e}"}, 500
 
     @jwt_required()
     def delete(self, round_id):
@@ -216,6 +217,45 @@ class ShotIndex(Resource):
         except IntegrityError:
             db.session.rollback()
             return {'error': ['422 Unable to add shots']}, 422
+        
+
+#Search for Golf Course(external API)
+class CourseSearch(Resource):
+    @jwt_required()
+    def get(self):
+        q = (request.args.get("q") or request.args.get("query") or "").strip()
+        if not q:
+            return {"results": [], "total": 0}, 200
+
+        url = f"{GOLFCOURSE_API_BASE}/search"
+        headers = {
+            "Authorization": f"Key {GOLFCOURSE_API_KEY}",
+            "Accept": "application/json",
+        }
+
+        try:
+            resp = requests.get(url, params={"search_query": q}, headers=headers, timeout=10)
+            resp.raise_for_status()
+            data = resp.json() if resp.content else {}
+
+            results = (
+                data.get("results")
+                or data.get("data")
+                or data.get("courses")  
+                or (data if isinstance(data, list) else [])
+            )
+            total = data.get("total") or (len(results) if isinstance(results, list) else 0)
+
+            return {"results": results, "total": total}, 200
+
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 502
+            body = e.response.text[:300] if e.response is not None else ""
+            return {"error": "Upstream error", "status": status, "body": body}, 502
+        except Exception as e:
+            return {"error": f"Server error: {e}"}, 500
+
+
       
 
 # API Endpoints
@@ -228,6 +268,8 @@ api.add_resource(RoundDetails, '/rounds/<int:round_id>')
 api.add_resource(RoundHoleIndex, '/rounds/<int:round_id>/holes', endpoint='round_holes')
 
 api.add_resource(ShotIndex, '/rounds/<int:round_id>/holes/<int:hole_id>/shots', endpoint='shots')
+
+api.add_resource(CourseSearch, '/courses/search')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
