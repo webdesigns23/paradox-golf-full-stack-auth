@@ -119,7 +119,7 @@ class RoundDetails(Resource):
             db.session.rollback()
             return {'error': ['422 Unable to process']}, 422
 
-        return RoundSchema().dump(r), 200
+        return RoundSchema().dump(round), 200
 
     @jwt_required()
     def delete(self, round_id):
