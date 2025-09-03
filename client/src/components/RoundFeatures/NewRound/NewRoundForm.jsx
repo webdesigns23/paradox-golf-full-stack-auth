@@ -1,8 +1,7 @@
 import { useState, useContext } from "react";
 import {RoundContext} from "../../../context/RoundContext";
 import RoundFields from "./RoundFields";
-import HoleFields from "./HoleFields";
-import AddShotRows from "./AddShotRows";
+import HoleList from "./HoleList";
 
 export default function NewRoundForm(){
 	const { rounds, setRounds } = useContext(RoundContext);
@@ -35,15 +34,6 @@ export default function NewRoundForm(){
     }]
 	}])
 
-	// const [shotData, setShotData] = useState([{
-	// 	stroke_number: 1,
-	// 	start_distance: "",
-	// 	unit: "yd",
-	// 	surface: "tee",
-	// 	penalty: 0,
-	// 	club: "",
-	// 	notes: "",
-	// }])
 	
   //update Round, Hole, Shot
 	function updateRound(e) {
@@ -54,7 +44,8 @@ export default function NewRoundForm(){
 	}
 
   function updateHole(holeIndex, name, initialValue) {
-    const numericFields = ["hole_number", "par", "score"].includes(name);
+    const numericFields = ["hole_number", "par", "score"];
+
 		const value = numericFields.includes(name) && initialValue !== "" ? Number(initialValue) : initialValue;
     
 		setHolesData((prev) => prev.map((h, i) => (i === holeIndex ? { ...h, [name]: value} : h))
