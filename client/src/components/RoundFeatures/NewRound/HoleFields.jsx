@@ -1,6 +1,6 @@
 
 
-export default function HoleFields({holeData, updateHole}){
+export default function HoleFields({holes, holeIndex, updateHole}){
 
 	return (
     <div className="form_section">
@@ -13,7 +13,7 @@ export default function HoleFields({holeData, updateHole}){
             name="hole_number"
             min={1}
             max={18}
-            value={holeData.hole_number}
+            value={holes.hole_number}
             onChange={updateHole}
           />
         </label>
@@ -25,7 +25,7 @@ export default function HoleFields({holeData, updateHole}){
             name="par"
             min={3}
             max={5}
-            value={holeData.par}
+            value={holes.par}
             onChange={updateHole} 
           />
         </label>
@@ -36,7 +36,7 @@ export default function HoleFields({holeData, updateHole}){
             type="number"
             name="score"
             min={1}
-            value={holeData.score}
+            value={holes.score}
             onChange={updateHole}
           />
         </label>
