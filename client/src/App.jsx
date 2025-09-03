@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import Rounds from "./pages/Rounds";
+import AddRound from "./components/RoundFeatures/AddRound";
 import RoundDetails from "./components/RoundFeatures/RoundDetails"
 import Stats from "./pages/Stats";
 import Challenges from "./pages/Challenges";
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
+          <Route path="/rounds/new" element={<AddRound />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />
           <Route path="/stats" element={<Stats />} />
           <Route path="/challenges" element={<Challenges />} />

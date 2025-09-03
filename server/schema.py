@@ -15,7 +15,7 @@ class RoundSchema(Schema):
 	id = fields.Integer(dump_only=True)
 	course_name = fields.String(required=True)
 	course_external_id = fields.Integer(allow_none=True)
-	date = fields.Date(required=True)
+	date = fields.Date(required=True, format="%m/%d/%Y")
 	tee = fields.String(allow_none=True)
 	tee_name = fields.String(allow_none=True)
 	holes = fields.String(allow_none=True)
