@@ -1,32 +1,27 @@
 import { useState } from "react";
 
-export default function ShotFields() {
-	const [shotData, setShotData] = useState({
-		stroke_number: 1,
-		start_distance: "",
-		unit: "yd",
-		surface: "tee",
-		penalty: 0,
-		club: "",
-		notes: "",
-	})
+export default function ShotFields({shotData, updateShot}) {
+// 	const [shotData, setShotData] = useState({
+// 		stroke_number: 1,
+// 		start_distance: "",
+// 		unit: "yd",
+// 		surface: "tee",
+// 		penalty: 0,
+// 		club: "",
+// 		notes: "",
+// 	})
 
-	// function updateShot(index, field, value) {
-	// 	const numeric = ["stroke_number", "start_distance", "penalty"].includes(field);
-	// 	setShotData((prev) => prev.map((shot, i) => (i === index ? { ...shot, [field]: numeric ? Number(value) : value } : shot)))
-	// }
+// 	function updateShot(e) {
+//     const { name, value } = e.target;
+//     const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
 
-	function updateShot(e) {
-    const { name, value } = e.target;
-    const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
-
-    setShotData(prev => ({
-      ...prev,
-      [name]: numeric
-        ? (value === "" ? "" : Number(value)) // allow empty while typing
-        : value,
-    }));
-  }
+//     setShotData(prev => ({
+//       ...prev,
+//       [name]: numeric
+//         ? (value === "" ? "" : Number(value)) // allow empty while typing
+//         : value,
+//     }));
+//   }
 
 	return (
 		<div className="form_section">

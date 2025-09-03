@@ -1,17 +1,17 @@
 import { useState } from "react";
 
-export default function HoleFields(){
-	const [holeData, setHoleData] = useState({
-		hole_number: 1,
-		par: 3,
-		score: 1,
-	})
+export default function HoleFields({holeData, updateHole}){
+	// const [holeData, setHoleData] = useState({
+	// 	hole_number: 1,
+	// 	par: 3,
+	// 	score: 1,
+	// })
 
-	function updateHole(e) {
-		const {name, value} = e.target;
-		setHoleData((prev) => ({ ...prev, [name]: ["hole_number", "par", "score"].includes(name) ? Number(value) : value,
-    }));
-	}
+	// function updateHole(e) {
+	// 	const {name, value} = e.target;
+	// 	setHoleData((prev) => ({ ...prev, [name]: ["hole_number", "par", "score"].includes(name) ? Number(value) : value,
+  //   }));
+	// }
 
 	return (
     <div className="form_section">

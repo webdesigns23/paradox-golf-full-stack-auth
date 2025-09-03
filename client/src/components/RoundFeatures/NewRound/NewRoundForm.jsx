@@ -9,7 +9,59 @@ export default function NewRoundForm(){
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState(null);
 
-	//reuseability for fetch
+  const [roundData, setRoundData] = useState({
+		course_name: "",
+		course_external_id: "",
+		date: "",
+		tee: "",
+		tee_name: "",
+		holes: "",
+		notes: "",
+	})
+
+  const [holeData, setHoleData] = useState({
+		hole_number: 1,
+		par: 3,
+		score: 1,
+	})
+
+	const [shotData, setShotData] = useState({
+		stroke_number: 1,
+		start_distance: "",
+		unit: "yd",
+		surface: "tee",
+		penalty: 0,
+		club: "",
+		notes: "",
+	})
+
+	
+  //update Round, Hole, Shot
+	function updateRound(e) {
+		const { name, value } = e.target;
+		setRoundData((prev) => ({ ...prev, [name]: name === "hole" ? Number(value) : value }));
+	}
+
+  function updateHole(e) {
+		const {name, value} = e.target;
+		setHoleData((prev) => ({ ...prev, [name]: ["hole_number", "par", "score"].includes(name) ? Number(value) : value,
+    }));
+	}
+
+  function updateShot(e) {
+    const { name, value } = e.target;
+    const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
+
+    setShotData(prev => ({
+      ...prev,
+      [name]: numeric
+        ? (value === "" ? "" : Number(value)) // allow empty while typing
+        : value,
+    }));
+  }
+
+
+	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");
 	const authHeaders = {
 		"Content-Type": "application/json",
@@ -43,7 +95,7 @@ export default function NewRoundForm(){
       if (!hRes.ok) throw new Error(`Create hole failed: ${hRes.status}`);
       const createdHole = await hRes.json();
 
-      //Create Shots for that Hole
+      //Create one Shots for that Hole
       for (const shot of shots) {
         const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
           method: "POST",
@@ -64,11 +116,11 @@ export default function NewRoundForm(){
         date: "",
         tee: "",
         tee_name: "",
-        holes: 18,
+        holes: "",
         notes: "",
       });
-      setHoleData({ hole_number: 1, par: 4, score: 4 });
-      setShots([{ stroke_number: 1, start_distance: 250, unit: "yd", surface: "tee", penalty: 0, club: "Driver", notes: "" }]);
+      setHoleData({ hole_number: 1, par: 3, score: 1 });
+      setShots([{ stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -81,9 +133,9 @@ export default function NewRoundForm(){
 			<h2>Add New Round</h2>
 			{error && <div className="error"> Error: {error}</div>}
 
-			<RoundFields />
-			<HoleFields />
-			<ShotFields />
+			<RoundFields roundData={roundData} updateRound={updateRound}/>
+			<HoleFields holeData={holeData} updateHole={updateHole}/>
+			<ShotFields shotData={shotData} updateShot={updateShot}/>
 
 			<button type="submit" disabled={submitting} className="submitBtn">
 				{submitting ? "Saving..." : "Save"}

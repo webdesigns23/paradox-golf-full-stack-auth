@@ -1,20 +1,20 @@
 import { useState } from "react";
 
-export default function RoundFields() {
-	const [roundData, setRoundData] = useState({
-		course_name: "",
-		course_external_id: "",
-		date: "",
-		tee: "",
-		tee_name: "",
-		holes: "",
-		notes: "",
-	})
+export default function RoundFields({roundData, updateRound}) {
+	// const [roundData, setRoundData] = useState({
+	// 	course_name: "",
+	// 	course_external_id: "",
+	// 	date: "",
+	// 	tee: "",
+	// 	tee_name: "",
+	// 	holes: "",
+	// 	notes: "",
+	// })
 
-	function updateRound(e) {
-		const { name, value } = e.target;
-		setRoundData((prev) => ({ ...prev, [name]: name === "hole" ? Number(value) : value }));
-	}
+	// function updateRound(e) {
+	// 	const { name, value } = e.target;
+	// 	setRoundData((prev) => ({ ...prev, [name]: name === "hole" ? Number(value) : value }));
+	// }
 
 	return (
 		<div className="form_section">
