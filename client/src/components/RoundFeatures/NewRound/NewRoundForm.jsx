@@ -19,22 +19,31 @@ export default function NewRoundForm(){
 		notes: "",
 	})
 
-  const [holeData, setHoleData] = useState({
+  //Array of holes, will now have a shots array per hole
+  const [holesData, setHolesData] = useState([{
 		hole_number: 1,
 		par: 3,
 		score: 1,
-	})
-
-	const [shotData, setShotData] = useState([{
-		stroke_number: 1,
-		start_distance: "",
-		unit: "yd",
-		surface: "tee",
-		penalty: 0,
-		club: "",
-		notes: "",
+    shots: [{
+      stroke_number: 1,
+      start_distance: "",
+      unit: "yd",
+      surface: "tee",
+      penalty: 0,
+      club: "",
+      notes: "",
+    }]
 	}])
 
+	// const [shotData, setShotData] = useState([{
+	// 	stroke_number: 1,
+	// 	start_distance: "",
+	// 	unit: "yd",
+	// 	surface: "tee",
+	// 	penalty: 0,
+	// 	club: "",
+	// 	notes: "",
+	// }])
 	
   //update Round, Hole, Shot
 	function updateRound(e) {
@@ -44,44 +53,93 @@ export default function NewRoundForm(){
       [name]: numericFields.includes(name) && value !== "" ? Number(value) : value }));
 	}
 
-  function updateHole(e) {
-		const {name, value} = e.target;
+  function updateHole(holeIndex, name, initialValue) {
     const numericFields = ["hole_number", "par", "score"].includes(name);
-		setHoleData((prev) => ({ ...prev, 
-      [name]: numericFields && value !== "" ? Number(value) : value }));
+		const value = numericFields.includes(name) && initialValue !== "" ? Number(initialValue) : initialValue;
+    
+		setHolesData((prev) => prev.map((h, i) => (i === holeIndex ? { ...h, [name]: value} : h))
+   );
 	}
 
-  // function updateShot(e) {
-  //   const { name, value } = e.target;
-  //   const numericFields = ["stroke_number", "start_distance", "penalty"].includes(name);
-  //   setShotData(prev => ({
-  //     ...prev,
-  //     [name]: numericFields ? (value === "" ? "" : Number(value)): value }));
-  // }
-
-  function updateShot(index, name, value) {
+  function updateShot(holeIndex, shotIndex, name, initialValue) {
     const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
-    setShotData((prev) =>
-      prev.map((shot, i) =>
-        i === index
-          ? { ...shot, [name]: numeric ? (value === "" ? "" : Number(value)) : value }
-          : shot
-      )
+    const value = numeric ? (initialValue === "" ? "" : Number(initialValue)) : initialValue;
+    
+    setHolesData((prev) =>
+      prev.map((h, i) => {
+        if (i !== holeIndex) return h;
+        return {
+          ...h,
+          shots: h.shots.map((s, _) => (_ === shotIndex ? { ...s, [name]: value} : s)),
+        };
+      })
     );
   }
 
-  //add remove shots fields
-  function addShotRow() {
-    setShotData((prev) => [
+  //add remove holes fields
+  function addHoleRow() {
+    setHolesData((prev) => [
       ...prev,
-      { stroke_number: prev.length + 1, start_distance: "", unit: "yd", surface: "fairway", penalty: 0, club: "", notes: "" },
+      {
+        hole_number: prev.length + 1,
+        par: 3,
+        score: 1,
+        shots: [{ 
+          stroke_number: prev.length + 1, 
+          start_distance: "", 
+          unit: "yd", 
+          surface: "fairway", 
+          penalty: 0, 
+          club: "", 
+          notes: "" },
+        ]
+      }
+      
     ]);
   }
 
-  function removeShotRow(i) {
-    setShotData((prev) => prev.filter((_, idx) => idx !== i));
+  function removeHoleRow(holeIndex) {
+    setHolesData((prev) => {
+      const nextHole = prev.filter((_, i) => i !== holeIndex);
+      return nextHole.map((h, i) => ({ ...h, hole_number: i +1}));
+    });
   }
 
+  //add remove shots fields
+  function addShotRow(holeIndex) {
+    setHolesData((prev) => 
+      prev.map((h,i) => {
+        if (i !== holeIndex) return h;
+        const nextStroke = (h.shots?.length || 0 ) +1;
+        return {
+          ...h,
+          shots:[
+            ...h.shots,
+            {
+              stroke_number: nextStroke, 
+              start_distance: "", 
+              unit: "yd", 
+              surface: "fairway", 
+              penalty: 0, 
+              club: "", 
+              notes: ""   
+            },
+          ]
+        }
+    })
+  )}
+
+  function removeShotRow(holeIndex, shotIndex) {
+    setHolesData((prev) =>
+      prev.map((h, i) => {
+        if(i !== holeIndex) return h;
+        const trimmed = h.shots.filter((_,s) => s !== shotIndex);
+
+        const renumber = trimmed.map((s, index) => ({ ...s, stroke_number: index +1}));
+        return { ...h, shots: renumber};
+      })
+    )
+  }
 
 	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");
@@ -107,41 +165,55 @@ export default function NewRoundForm(){
       if (!rRes.ok) throw new Error(`Create round failed: ${rRes.status}`);
       const createdRound = await rRes.json();
 
-      //Create one Hole for that Round
-      const hRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes`, {
+      //Create Holes for that Round
+      for (const hole of holesData) {
+        const hRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes`, {
         method: "POST",
         headers: authHeaders,
-        body: JSON.stringify(holeData),
+        body: JSON.stringify({
+          hole_number: hole.hole_number,
+          par: hole.par,
+          score: hole.score,
+        }),
       });
       if (!hRes.ok) throw new Error(`Create hole failed: ${hRes.status}`);
       const createdHole = await hRes.json();
 
-      //Create one Shots for that Hole
-      for (const shot of shotData) {
+      //Create Shots for that Hole
+      for (const shot of hole.shots) {
         const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
           method: "POST",
           headers: authHeaders,
-          body: JSON.stringify(shot),
+          body: JSON.stringify({
+            stroke_number: shot.stroke_number,
+            start_distance: shot.start_distance === "" ? null : shot.start_distance,
+            unit: shot.unit,
+            surface: shot.surface,
+            penalty: shot.penalty || 0,
+            club: shot.club || "",
+            notes: shot.notes || "",
+          }),
         });
         if (!sRes.ok) throw new Error(`Create shot failed: ${sRes.status}`);
         await sRes.json();
+        }
       }
-
+         
       // Update context 
       setRounds([...rounds, createdRound]);
 
       //Reset forms
       setRoundData({
         course_name: "",
-        course_external_id: "",
-        date: "",
+        course_external_id: "1234",
+        date: new Date().toISOString().split("T")[0],
         tee: "",
         tee_name: "",
         holes: "",
         notes: "",
       });
-      setHoleData({ hole_number: 1, par: 3, score: 1 });
-      setShotData([{ stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]);
+      setHolesData([{ hole_number: 1, par: 3, score: 1 , shots: [{
+        stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]}]);
 
     } catch (e) {
       setError(e.message);
@@ -156,13 +228,17 @@ export default function NewRoundForm(){
 			{error && <div className="error"> Error: {error}</div>}
 
 			<RoundFields roundData={roundData} updateRound={updateRound}/>
-			<HoleFields holeData={holeData} updateHole={updateHole}/>
-			<AddShotRows 
-        shots={shotData} 
-        updateShot={updateShot} 
-        onAdd={addShotRow} 
-        onRemove={removeShotRow}/>
 
+			<HoleList
+        holes={holesData} 
+        updateHole={updateHole}
+        updateShot={updateShot}
+        addHoleRow={addHoleRow}
+        removeHoleRow={removeHoleRow}
+        addShotRow={addShotRow}
+        removeShotRow={removeShotRow}
+      />
+	
 			<button type="submit" disabled={submitting} className="submitBtn">
 				{submitting ? "Saving..." : "Save"}
 			</button>
