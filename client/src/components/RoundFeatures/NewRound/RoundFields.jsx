@@ -27,6 +27,7 @@ export default function RoundFields() {
 					name="course_name"
 					value={roundData.course_name}
 					onChange={updateRound}
+					placeholder="course name"
 					required
 				/>
 			</label>
@@ -86,6 +87,7 @@ export default function RoundFields() {
 					name="notes"
 					value={roundData.notes}
 					onChange={updateRound}
+					placeholder="how was your round?"
 				/>
 			</label>
 		</div>

@@ -11,10 +11,22 @@ export default function ShotFields() {
 		notes: "",
 	})
 
-	function updateShot(index, field, value) {
-		const numeric = ["stroke_number", "start_distance", "penalty"].includes(field);
-		setShotData((prev) => prev.map((shot, i) => (i === index ? { ...shot, [field]: numeric ? Number(value) : value } : shot)))
-	}
+	// function updateShot(index, field, value) {
+	// 	const numeric = ["stroke_number", "start_distance", "penalty"].includes(field);
+	// 	setShotData((prev) => prev.map((shot, i) => (i === index ? { ...shot, [field]: numeric ? Number(value) : value } : shot)))
+	// }
+
+	function updateShot(e) {
+    const { name, value } = e.target;
+    const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
+
+    setShotData(prev => ({
+      ...prev,
+      [name]: numeric
+        ? (value === "" ? "" : Number(value)) // allow empty while typing
+        : value,
+    }));
+  }
 
 	return (
 		<div className="form_section">
@@ -23,25 +35,29 @@ export default function ShotFields() {
 				Stroke #
 				<input className="input"
 					type="number"
+					name="stroke_number"
 					value={shotData.stroke_number}
-					onChange={(e) => onChange(index, "stroke_number", e.target.value)}
+					onChange={updateShot}
 				/>
 			</label>
 
 			<label className="label">
-				Distance to Hole
+				Distance
 				<input className="input"
 					type="number"
+					name="start_distance"
 					value={shotData.start_distance}
-					onChange={(e) => onChange(index, "start_distance", e.target.value)}
+					onChange={updateShot}
+					placeholder="distance to hole"
 				/>
 			</label>
 
 			<label className="label">
 				Unit
 				<select className="input"
+					name="unit"
 					value={shotData.unit}
-					onChange={(e) => onChange(index, "unit", e.target.value)}
+					onChange={updateShot}
 				>
 					<option value="yd">yd</option>
 					<option value="m">m</option>
@@ -52,8 +68,9 @@ export default function ShotFields() {
 			<label className="label">
 				Surface
 				<select className="input"
+					name="surface"
 					value={shotData.surface}
-					onChange={(e) => onChange(index, "surface", e.target.value)}
+					onChange={updateShot}
 				>
 					<option value="tee">tee</option>
 					<option value="fairway">fairway</option>
@@ -67,16 +84,19 @@ export default function ShotFields() {
 				Penalty
 				<input className="input"
 					type="number"
+					name="penalty"
 					value={shotData.penalty}
-					onChange={(e) => onChange(index, "penalty", e.target.value)}
+					onChange={updateShot}
 				/>
 			</label>
 
 			<label className="label">
-				Club Used
+				Club
 				<input className="input"
+					name="club"
 					value={shotData.club || ""}
-					onChange={(e) => onChange(index, "club", e.target.value)}
+					onChange={updateShot}
+					placeholder="what club did you use?"
 				/>
 			</label>
 
@@ -86,7 +106,8 @@ export default function ShotFields() {
 					type="text"
 					name="notes"
 					value={shotData.notes}
-					onChange={(e) => onChange(index, "notes", e.target.value)}
+					onChange={updateShot}
+					placeholder="how was your shot?"
 				/>
 			</label>
 		</div>

@@ -30,7 +30,7 @@ export default function HoleFields(){
         </label>
 
         <label className="inlineLabel">
-          Par
+          Hole Par
 		  <input className="input"
             type="number"
             name="par"
@@ -42,7 +42,7 @@ export default function HoleFields(){
         </label>
 		
         <label className="inlineLabel">
-          Score
+          Your Score
 		  <input className="input"
             type="number"
             name="score"
