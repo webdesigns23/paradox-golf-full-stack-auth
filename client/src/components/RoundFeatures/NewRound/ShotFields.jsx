@@ -1,27 +1,6 @@
-import { useState } from "react";
+
 
 export default function ShotFields({shotData, updateShot}) {
-// 	const [shotData, setShotData] = useState({
-// 		stroke_number: 1,
-// 		start_distance: "",
-// 		unit: "yd",
-// 		surface: "tee",
-// 		penalty: 0,
-// 		club: "",
-// 		notes: "",
-// 	})
-
-// 	function updateShot(e) {
-//     const { name, value } = e.target;
-//     const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
-
-//     setShotData(prev => ({
-//       ...prev,
-//       [name]: numeric
-//         ? (value === "" ? "" : Number(value)) // allow empty while typing
-//         : value,
-//     }));
-//   }
 
 	return (
 		<div className="form_section">
@@ -37,7 +16,7 @@ export default function ShotFields({shotData, updateShot}) {
 			</label>
 
 			<label className="label">
-				Distance
+				Start Distance
 				<input className="input"
 					type="number"
 					name="start_distance"

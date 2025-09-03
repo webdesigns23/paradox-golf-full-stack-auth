@@ -1,20 +1,6 @@
-import { useState } from "react";
+
 
 export default function RoundFields({roundData, updateRound}) {
-	// const [roundData, setRoundData] = useState({
-	// 	course_name: "",
-	// 	course_external_id: "",
-	// 	date: "",
-	// 	tee: "",
-	// 	tee_name: "",
-	// 	holes: "",
-	// 	notes: "",
-	// })
-
-	// function updateRound(e) {
-	// 	const { name, value } = e.target;
-	// 	setRoundData((prev) => ({ ...prev, [name]: name === "hole" ? Number(value) : value }));
-	// }
 
 	return (
 		<div className="form_section">
@@ -33,12 +19,24 @@ export default function RoundFields({roundData, updateRound}) {
 			</label>
 
 			<label className="label">
+				Course #
+				<input className="input"
+					type="number"
+					name="course_external_id"
+					value={roundData.course_external_id}
+					onChange={updateRound}
+					placeholder="course #"
+				/>
+			</label>
+
+			<label className="label">
 				Date
 				<input className="input"
 					type="date"
 					name="date"
 					value={roundData.date}
 					onChange={updateRound}
+					placeholder="YYYY-MM-DD"
 				/>
 			</label>
 

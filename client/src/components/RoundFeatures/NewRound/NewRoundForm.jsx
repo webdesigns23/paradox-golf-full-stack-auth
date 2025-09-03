@@ -11,8 +11,8 @@ export default function NewRoundForm(){
 
   const [roundData, setRoundData] = useState({
 		course_name: "",
-		course_external_id: "",
-		date: "",
+		course_external_id: 1234,
+		date: new Date().toISOString().split("T")[0],
 		tee: "",
 		tee_name: "",
 		holes: "",
@@ -39,25 +39,24 @@ export default function NewRoundForm(){
   //update Round, Hole, Shot
 	function updateRound(e) {
 		const { name, value } = e.target;
-		setRoundData((prev) => ({ ...prev, [name]: name === "hole" ? Number(value) : value }));
+    const numericFields = ["holes", "course_external_id"];
+		setRoundData((prev) => ({ ...prev, 
+      [name]: numericFields.includes(name) && value !== "" ? Number(value) : value }));
 	}
 
   function updateHole(e) {
 		const {name, value} = e.target;
-		setHoleData((prev) => ({ ...prev, [name]: ["hole_number", "par", "score"].includes(name) ? Number(value) : value,
-    }));
+    const numericFields = ["hole_number", "par", "score"].includes(name);
+		setHoleData((prev) => ({ ...prev, 
+      [name]: numericFields && value !== "" ? Number(value) : value }));
 	}
 
   function updateShot(e) {
     const { name, value } = e.target;
-    const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
-
+    const numericFields = ["stroke_number", "start_distance", "penalty"].includes(name);
     setShotData(prev => ({
       ...prev,
-      [name]: numeric
-        ? (value === "" ? "" : Number(value)) // allow empty while typing
-        : value,
-    }));
+      [name]: numericFields ? (value === "" ? "" : Number(value)): value }));
   }
 
 
@@ -74,7 +73,6 @@ export default function NewRoundForm(){
     e.preventDefault();
     setError(null);
     setSubmitting(true);
-
 
     try {
       //Create Round
@@ -96,15 +94,13 @@ export default function NewRoundForm(){
       const createdHole = await hRes.json();
 
       //Create one Shots for that Hole
-      for (const shot of shots) {
-        const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
+      const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
           method: "POST",
           headers: authHeaders,
-          body: JSON.stringify(shot),
+          body: JSON.stringify(shotData),
         });
         if (!sRes.ok) throw new Error(`Create shot failed: ${sRes.status}`);
         await sRes.json();
-      }
 
       // Update context 
       setRounds([...rounds, createdRound]);
@@ -120,7 +116,8 @@ export default function NewRoundForm(){
         notes: "",
       });
       setHoleData({ hole_number: 1, par: 3, score: 1 });
-      setShots([{ stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]);
+      setShotData([{ stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]);
+
     } catch (e) {
       setError(e.message);
     } finally {
