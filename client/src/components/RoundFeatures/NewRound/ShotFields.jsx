@@ -1,17 +1,16 @@
 
 
-export default function ShotFields({shotData, updateShot}) {
+export default function ShotFields({index, shot, updateShot, onRemove }) {
 
 	return (
 		<div className="form_section">
-			<h3 className="h3">Shots</h3>
 			<label className="label">
 				Stroke #
 				<input className="input"
 					type="number"
 					name="stroke_number"
-					value={shotData.stroke_number}
-					onChange={updateShot}
+					value={shot.stroke_number}
+					onChange={(e) => updateShot(index, "stroke_number", e.target.value)}
 				/>
 			</label>
 
@@ -20,8 +19,8 @@ export default function ShotFields({shotData, updateShot}) {
 				<input className="input"
 					type="number"
 					name="start_distance"
-					value={shotData.start_distance}
-					onChange={updateShot}
+					value={shot.start_distance}
+					onChange={(e) => updateShot(index, "start_distance", e.target.value)}
 					placeholder="distance to hole"
 				/>
 			</label>
@@ -30,8 +29,8 @@ export default function ShotFields({shotData, updateShot}) {
 				Unit
 				<select className="input"
 					name="unit"
-					value={shotData.unit}
-					onChange={updateShot}
+					value={shot.unit}
+					onChange={(e) => updateShot(index, "unit", e.target.value)}
 				>
 					<option value="yd">yd</option>
 					<option value="m">m</option>
@@ -43,8 +42,8 @@ export default function ShotFields({shotData, updateShot}) {
 				Surface
 				<select className="input"
 					name="surface"
-					value={shotData.surface}
-					onChange={updateShot}
+					value={shot.surface}
+					onChange={(e) => updateShot(index, "surface", e.target.value)}
 				>
 					<option value="tee">tee</option>
 					<option value="fairway">fairway</option>
@@ -59,8 +58,8 @@ export default function ShotFields({shotData, updateShot}) {
 				<input className="input"
 					type="number"
 					name="penalty"
-					value={shotData.penalty}
-					onChange={updateShot}
+					value={shot.penalty}
+					onChange={(e) => updateShot(index, "penalty", e.target.value)}
 				/>
 			</label>
 
@@ -68,8 +67,8 @@ export default function ShotFields({shotData, updateShot}) {
 				Club
 				<input className="input"
 					name="club"
-					value={shotData.club || ""}
-					onChange={updateShot}
+					value={shot.club || ""}
+					onChange={(e) => updateShot(index, "club", e.target.value)}
 					placeholder="what club did you use?"
 				/>
 			</label>
@@ -79,11 +78,12 @@ export default function ShotFields({shotData, updateShot}) {
 				<textarea className="textarea"
 					type="text"
 					name="notes"
-					value={shotData.notes}
-					onChange={updateShot}
+					value={shot.notes}
+					onChange={(e) => updateShot(index, "notes", e.target.value)}
 					placeholder="how was your shot?"
 				/>
 			</label>
+			 <button type="button" onClick={() => onRemove(index)}>Remove</button>
 		</div>
 	);
 }

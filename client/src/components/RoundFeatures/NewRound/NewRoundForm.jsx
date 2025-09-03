@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import {RoundContext} from "../../../context/RoundContext";
 import RoundFields from "./RoundFields";
 import HoleFields from "./HoleFields";
-import ShotFields from "./ShotFields";
+import AddShotRows from "./AddShotRows";
 
 export default function NewRoundForm(){
 	const { rounds, setRounds } = useContext(RoundContext);
@@ -25,7 +25,7 @@ export default function NewRoundForm(){
 		score: 1,
 	})
 
-	const [shotData, setShotData] = useState({
+	const [shotData, setShotData] = useState([{
 		stroke_number: 1,
 		start_distance: "",
 		unit: "yd",
@@ -33,7 +33,7 @@ export default function NewRoundForm(){
 		penalty: 0,
 		club: "",
 		notes: "",
-	})
+	}])
 
 	
   //update Round, Hole, Shot
@@ -51,12 +51,35 @@ export default function NewRoundForm(){
       [name]: numericFields && value !== "" ? Number(value) : value }));
 	}
 
-  function updateShot(e) {
-    const { name, value } = e.target;
-    const numericFields = ["stroke_number", "start_distance", "penalty"].includes(name);
-    setShotData(prev => ({
+  // function updateShot(e) {
+  //   const { name, value } = e.target;
+  //   const numericFields = ["stroke_number", "start_distance", "penalty"].includes(name);
+  //   setShotData(prev => ({
+  //     ...prev,
+  //     [name]: numericFields ? (value === "" ? "" : Number(value)): value }));
+  // }
+
+  function updateShot(index, name, value) {
+    const numeric = ["stroke_number", "start_distance", "penalty"].includes(name);
+    setShotData((prev) =>
+      prev.map((shot, i) =>
+        i === index
+          ? { ...shot, [name]: numeric ? (value === "" ? "" : Number(value)) : value }
+          : shot
+      )
+    );
+  }
+
+  //add remove shots fields
+  function addShotRow() {
+    setShotData((prev) => [
       ...prev,
-      [name]: numericFields ? (value === "" ? "" : Number(value)): value }));
+      { stroke_number: prev.length + 1, start_distance: "", unit: "yd", surface: "fairway", penalty: 0, club: "", notes: "" },
+    ]);
+  }
+
+  function removeShotRow(i) {
+    setShotData((prev) => prev.filter((_, idx) => idx !== i));
   }
 
 
@@ -94,13 +117,15 @@ export default function NewRoundForm(){
       const createdHole = await hRes.json();
 
       //Create one Shots for that Hole
-      const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
+      for (const shot of shotData) {
+        const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
           method: "POST",
           headers: authHeaders,
-          body: JSON.stringify(shotData),
+          body: JSON.stringify(shot),
         });
         if (!sRes.ok) throw new Error(`Create shot failed: ${sRes.status}`);
         await sRes.json();
+      }
 
       // Update context 
       setRounds([...rounds, createdRound]);
@@ -132,7 +157,11 @@ export default function NewRoundForm(){
 
 			<RoundFields roundData={roundData} updateRound={updateRound}/>
 			<HoleFields holeData={holeData} updateHole={updateHole}/>
-			<ShotFields shotData={shotData} updateShot={updateShot}/>
+			<AddShotRows 
+        shots={shotData} 
+        updateShot={updateShot} 
+        onAdd={addShotRow} 
+        onRemove={removeShotRow}/>
 
 			<button type="submit" disabled={submitting} className="submitBtn">
 				{submitting ? "Saving..." : "Save"}
