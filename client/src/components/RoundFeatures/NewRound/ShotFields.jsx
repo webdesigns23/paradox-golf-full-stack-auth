@@ -1,6 +1,8 @@
 
 
-export default function ShotFields({index, shot, updateShot, onRemove }) {
+export default function ShotFields(
+	{holeIndex, shotIndex, shot, updateShot, onRemove }
+) {
 
 	return (
 		<div className="form_section">
@@ -10,7 +12,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 					type="number"
 					name="stroke_number"
 					value={shot.stroke_number}
-					onChange={(e) => updateShot(index, "stroke_number", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "stroke_number", e.target.value)}
 				/>
 			</label>
 
@@ -20,7 +22,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 					type="number"
 					name="start_distance"
 					value={shot.start_distance}
-					onChange={(e) => updateShot(index, "start_distance", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "start_distance", e.target.value)}
 					placeholder="distance to hole"
 				/>
 			</label>
@@ -30,7 +32,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 				<select className="input"
 					name="unit"
 					value={shot.unit}
-					onChange={(e) => updateShot(index, "unit", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "unit", e.target.value)}
 				>
 					<option value="yd">yd</option>
 					<option value="m">m</option>
@@ -43,7 +45,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 				<select className="input"
 					name="surface"
 					value={shot.surface}
-					onChange={(e) => updateShot(index, "surface", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "surface", e.target.value)}
 				>
 					<option value="tee">tee</option>
 					<option value="fairway">fairway</option>
@@ -59,7 +61,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 					type="number"
 					name="penalty"
 					value={shot.penalty}
-					onChange={(e) => updateShot(index, "penalty", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "penalty", e.target.value)}
 				/>
 			</label>
 
@@ -68,7 +70,7 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 				<input className="input"
 					name="club"
 					value={shot.club || ""}
-					onChange={(e) => updateShot(index, "club", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "club", e.target.value)}
 					placeholder="what club did you use?"
 				/>
 			</label>
@@ -79,11 +81,11 @@ export default function ShotFields({index, shot, updateShot, onRemove }) {
 					type="text"
 					name="notes"
 					value={shot.notes}
-					onChange={(e) => updateShot(index, "notes", e.target.value)}
+					onChange={(e) => updateShot(holeIndex, shotIndex, "notes", e.target.value)}
 					placeholder="how was your shot?"
 				/>
 			</label>
-			 <button type="button" onClick={() => onRemove(index)}>Remove</button>
+			 <button type="button" onClick={onRemove}>Remove Shot</button>
 		</div>
 	);
 }

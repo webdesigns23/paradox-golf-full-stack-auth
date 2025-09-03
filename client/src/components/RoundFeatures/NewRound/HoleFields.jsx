@@ -14,7 +14,7 @@ export default function HoleFields({holes, holeIndex, updateHole}){
             min={1}
             max={18}
             value={holes.hole_number}
-            onChange={updateHole}
+            onChange={(e) => updateHole(holeIndex, "hole_number", e.target.value)}
           />
         </label>
 
@@ -26,7 +26,7 @@ export default function HoleFields({holes, holeIndex, updateHole}){
             min={3}
             max={5}
             value={holes.par}
-            onChange={updateHole} 
+            onChange={(e) => updateHole(holeIndex, "par", e.target.value)} 
           />
         </label>
 		
@@ -37,7 +37,7 @@ export default function HoleFields({holes, holeIndex, updateHole}){
             name="score"
             min={1}
             value={holes.score}
-            onChange={updateHole}
+            onChange={(e) => updateHole(holeIndex, "score", e.target.value)}
           />
         </label>
       </div>
