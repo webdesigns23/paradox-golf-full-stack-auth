@@ -33,6 +33,23 @@ export function RoundsProvider({children}){
 		fetchData()
 	}, [])
 
+	//Delete Round
+	async function deleteRound(id) {
+		try {
+			setLoading(true);
+			const response = await fetch (`http://127.0.0.1:5555/rounds/${id}`,{
+				method: "DELETE"});
+			if (!response.ok && response.status !==204) {
+				throw new Error(`${response.status}`);
+			}
+			setRounds(prev => prev.filter(r => r.id !==id));
+		} catch (error) {
+			setError(`Failed to delete project: ${error.message || error}`)
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	return(
 		<RoundContext.Provider value={{
 		rounds, setRounds,

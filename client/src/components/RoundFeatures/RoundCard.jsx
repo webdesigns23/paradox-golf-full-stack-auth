@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function RoundCard({round}){
+export default function RoundCard({round, handleDelete}){
 	
 
 	return(
@@ -14,6 +14,10 @@ export default function RoundCard({round}){
 			<Link to={`/rounds/${round.id}`}>
 				<button>Round Details</button>
 			</Link>	
+
+			<button className="delete_button" onClick={handleDelete}>
+				Remove Round
+			</button>
 			
 		</div>
 	)

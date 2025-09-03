@@ -3,7 +3,8 @@
 from flask import request, jsonify, make_response
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
-from flask_jwt_extended import create_access_token, get_jwt_identity, verify_jwt_in_request, jwt_required
+from flask_jwt_extended import create_access_token, get_jwt_identity, jwt_required
+from datetime import datetime
 
 from config import app, db, api, jwt
 from models import *
@@ -88,7 +89,54 @@ class RoundIndex(Resource):
         except IntegrityError:
             db.session.rollback()
             return {'error': ['422 Unable to proccess']}, 422
+
+class RoundDetails(Resource):
+    @jwt_required()
+    def patch(self, id):
+        user_id = int(get_jwt_identity())
+        round = Round.query.filter_by(id = id, user_id=user_id).first()
+
+        if not round: 
+            return {'error': ['No rounds found']}, 404
         
+        data = request.get_json() or {}
+
+        updatesAllowed = {'course_name', 'course_external_id', 'date', 'tee', 'tee_name', 'holes', 'notes'}
+
+        for key in updatesAllowed:
+            if key in data and data[key] is not None:
+                if key == 'date':
+                    try:
+                        round.date = datetime.strptime(data['date'], "%m/%d/%Y").date()
+                    except ValueError:
+                        return {'error': ['Invalid date format. Use MM/DD/YYYY.']}, 400
+                else:
+                    setattr(round, key, data[key])
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': ['422 Unable to process']}, 422
+
+        return RoundSchema().dump(r), 200
+
+    @jwt_required()
+    def delete(self, round_id):
+        user_id = int(get_jwt_identity())
+        round = Round.query.filter_by(id = round_id, user_id=user_id).first()
+
+        if not round: 
+            return {'error': ['No rounds found']}, 404
+        try:
+            db.session.delete(round)
+            db.session.commit()
+            return {}, 204
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': ['Could not delete round']}, 400
+
+
 #Round Hole Routes
 class RoundHoleIndex(Resource):
     @jwt_required()
@@ -161,7 +209,6 @@ class ShotIndex(Resource):
             club = data.get('club'),
             notes = data.get('notes'),
         )
-
         try:
             db.session.add(new_shot)
             db.session.commit()
@@ -171,13 +218,13 @@ class ShotIndex(Resource):
             return {'error': ['422 Unable to add shots']}, 422
       
 
-
 # API Endpoints
 api.add_resource(Signup, '/signup', endpoint='signup')
 api.add_resource(WhoAmI, '/me', endpoint='me')
 api.add_resource(Login, '/login', endpoint='login')
 
 api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
+api.add_resource(RoundDetails, '/rounds/<int:round_id>')
 api.add_resource(RoundHoleIndex, '/rounds/<int:round_id>/holes', endpoint='round_holes')
 
 api.add_resource(ShotIndex, '/rounds/<int:round_id>/holes/<int:hole_id>/shots', endpoint='shots')
