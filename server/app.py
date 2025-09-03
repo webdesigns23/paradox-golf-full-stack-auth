@@ -180,7 +180,7 @@ api.add_resource(Login, '/login', endpoint='login')
 api.add_resource(RoundIndex, '/rounds', endpoint='rounds')
 api.add_resource(RoundHoleIndex, '/rounds/<int:round_id>/holes', endpoint='round_holes')
 
-api.add_resource(ShotIndex, '/rounds/<int:round_hole_id>/shots', endpoint='shots')
+api.add_resource(ShotIndex, '/rounds/<int:round_hole_id>/holes/<int:hole_id>/shots', endpoint='shots')
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
