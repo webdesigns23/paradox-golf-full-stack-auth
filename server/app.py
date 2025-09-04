@@ -15,28 +15,55 @@ from schema import *
 #User Auth Routes
 class Signup(Resource):
     def post(self):
-        data = request.get_json() or {}
-        username = data.get('username')
-        password = data.get('password')
-        display_name = data.get('display_name')
+        data = request.get_json(silent=True) or {}
+        username = (data.get("username") or "").strip().lower()
+        password = data.get("password") or ""
+        password_confirmation = data.get("password_confirmation") or ""
+        display_name = (data.get("display_name") or "").strip()
 
-        user = User(
-            username=username,
-            display_name=display_name
-        )
+        errors = {}
+
+        # Basic validation
+        if not username:
+            errors["username"] = "Username is required."
+        elif len(username) < 3:
+            errors["username"] = "Username must be at least 3 characters."
+
+        if not password:
+            errors["password"] = "Password is required."
+        elif len(password) < 6:
+            errors["password"] = "Password must be at least 6 characters."
+
+        if password != password_confirmation:
+            errors["password_confirmation"] = "Passwords do not match."
+
+        if not display_name:
+            errors["display_name"] = "Display name is required."
+
+        if errors:
+            return make_response(jsonify(errors=errors), 400)
+
+        # check duplicates
+        if User.query.filter_by(username=username).first():
+            return make_response(jsonify(errors={"username": "Username is already taken."}), 409)
+
+        user = User(username=username, display_name=display_name)
         user.password_hash = password
 
         try:
             db.session.add(user)
             db.session.commit()
-
-            access_token = create_access_token(identity=str(user.id))
-            return make_response(
-                jsonify(token=access_token, user=UserSchema().dump(user)),200)
-        
         except IntegrityError:
             db.session.rollback()
-            return {'error': ['422 Unprocessable Entity']}, 422
+            return make_response(jsonify(errors={"username": "Username is already taken."}), 409)
+
+        access_token = create_access_token(identity=str(user.id))
+        return make_response(
+            jsonify(token=access_token, user=UserSchema().dump(user)),
+            201
+        )
+
+
         
 class WhoAmI(Resource):
     @jwt_required()
