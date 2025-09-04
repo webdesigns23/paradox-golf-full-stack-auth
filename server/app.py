@@ -101,7 +101,11 @@ class RoundIndex(Resource):
     @jwt_required()
     def get(self):
         user_id = int(get_jwt_identity())
-        rounds = Round.query.filter_by(user_id=user_id).all()
+        rounds = (
+            Round.query
+            .filter_by(user_id=user_id)
+            .order_by(Round.date.desc())
+            .all())
         return [RoundSchema().dump(r) for r in rounds], 200
     
     @jwt_required()
@@ -130,34 +134,39 @@ class RoundIndex(Resource):
 
 class RoundDetails(Resource):
     @jwt_required()
-    def get(self):
-        # accept either ?q=... or ?query=...
-        q = (request.args.get("q") or request.args.get("query") or "").strip()
-        if not q:
-            return {"results": [], "total": 0}, 200
+    def get(self, round_id):
+        user_id = int(get_jwt_identity())
+        round = Round.query.filter_by(id = round_id, user_id=user_id).first()
 
-        url = f"{GOLFCOURSE_API_BASE}/search"
-        headers = {
-            "Authorization": f"Key {GOLFCOURSE_API_KEY}",
-            "Accept": "application/json",
-        }
+        if not round: 
+            return {'error': ['No rounds found']}, 404
+        
+        return RoundSchema().dump(round),200
+
+        
+    @jwt_required()
+    def patch(self, round_id):
+        user_id = int(get_jwt_identity())
+        round = Round.query.filter_by(id=round_id, user_id=user_id).first()
+        if not round: 
+            return {'error': ['No rounds found']}, 404
+        
+        data = request.get_json() or {}
 
         try:
-            resp = requests.get(url, params={"search_query": q}, headers=headers, timeout=10)
-            resp.raise_for_status()
-            data = resp.json() if resp.content else {}
+            if 'notes' in data:
+                notes = (data.get("notes")).strip()
+                round.notes = notes
 
-            # normalize common shapes
-            results = data.get("results") or data.get("data") or (data if isinstance(data, list) else [])
-            total = data.get("total") or (len(results) if isinstance(results, list) else 0)
-            return {"results": results, "total": total}, 200
+            db.session.commit()
+            return RoundSchema().dump(round), 200
+        except IntegrityError:
+            db.session.rollback()
+            return {'error': ['Could not edit round notes']}, 400
+        except Exception as error:
+            db.session.rollback()
+            return {'error': ['Server error']}, 500
 
-        except requests.exceptions.HTTPError as e:
-            status = e.response.status_code if e.response is not None else 502
-            body = e.response.text[:300] if e.response is not None else ""
-            return {"error": "Upstream error", "status": status, "body": body}, 502
-        except Exception as e:
-            return {"error": f"Server error: {e}"}, 500
 
     @jwt_required()
     def delete(self, round_id):
@@ -173,6 +182,9 @@ class RoundDetails(Resource):
         except IntegrityError:
             db.session.rollback()
             return {'error': ['Could not delete round']}, 400
+        except Exception as error:
+            db.session.rollback()
+            return {'error': ['Server error']}, 500
 
 
 #Round Hole Routes

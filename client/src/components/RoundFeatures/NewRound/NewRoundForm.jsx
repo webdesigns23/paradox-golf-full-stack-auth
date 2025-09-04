@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom"
 import {RoundContext} from "../../../context/RoundContext";
 import RoundFields from "./RoundFields";
 import HoleList from "./HoleList";
@@ -19,6 +20,8 @@ export default function NewRoundForm(){
 		holes: "",
 		notes: "",
 	})
+
+  const navigate = useNavigate();
 
   //Array of holes, will now have a shots array per hole
   const [holesData, setHolesData] = useState([])
@@ -179,13 +182,20 @@ export default function NewRoundForm(){
         }
       }
          
-      // Update context 
-      setRounds([...rounds, createdRound]);
+      // Update context and sort
+      
+      setRounds(prev => {
+        const next = [createdRound, ...prev];
+        next.sort((a,b) => new Date(b.date) - new Date(a.date));
+        return next;
+      })
+
+      navigate("/rounds");
 
       //Reset forms
       setRoundData({
         course_name: "",
-        course_external_id: "1234",
+        course_external_id: 1234,
         date: new Date().toISOString().split("T")[0],
         tee: "",
         tee_name: "",

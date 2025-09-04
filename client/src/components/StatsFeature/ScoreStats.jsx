@@ -9,7 +9,6 @@ export default function ScoreStats() {
 		pars: 0,
 		bogeys: 0,
 		doublesBogeys: 0,
-		totalStrokes: 0
 	});
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
@@ -71,7 +70,6 @@ export default function ScoreStats() {
 			<p>Pars: {stats.pars}</p>
 			<p>Bogeys: {stats.bogeys}</p>
       		<p>Double Bogeys: {stats.doublesBogeys}</p>
-      		<p>Total Strokes: {stats.totalStrokes}</p>
 		</div>
 	)
 }
