@@ -1,4 +1,4 @@
-import meeseekBox from "../assets/images/meeseeks/meeseeks_box1.jpg"
+import meeseekBox from "../assets/images/meeseeks/meeseeks_box1.jpg";
 
 export default function Challenges(){
 	return(

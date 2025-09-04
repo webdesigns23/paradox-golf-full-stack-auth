@@ -36,5 +36,5 @@ export default function useRoundHoles(roundId) {
 
 	const totalStrokes = holes.reduce((sum, h) => sum + (h.score ?? 0), 0);
 	
-	return {holes, loading, error, totalStrokes};
+	return {holes, loading, error, totalStrokes, roundId};
 }

@@ -1,7 +1,8 @@
 import { useContext } from "react";
 import { RoundContext } from "../../context/RoundContext";
 
-export default function RoundStats() {
+
+export default function ScoreStats() {
 	const { rounds, loading, error } = useContext(RoundContext);
 
 	//rounds played
