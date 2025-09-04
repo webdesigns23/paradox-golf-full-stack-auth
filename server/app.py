@@ -62,8 +62,6 @@ class Signup(Resource):
             jsonify(token=access_token, user=UserSchema().dump(user)),
             201
         )
-
-
         
 class WhoAmI(Resource):
     @jwt_required()
@@ -75,16 +73,28 @@ class WhoAmI(Resource):
 class Login(Resource):
     def post(self):
         data = request.get_json() or {}
-        username = data.get('username')
+        username = (data.get('username') or "").strip()
         password = data.get('password')
 
+        if not username:
+            return {'error': ['Username required to enter portal']}, 400
+        
+        if not password: 
+            return {'error': ['Password required to enter portal']}, 400
+
         user = User.query.filter_by(username=username).first()
+        
+        if not user:
+            return {'error': ['Username not found']}, 401
+        
+        if not user.authenticate(password):
+            return {'error': ['Incorrect password']}, 401
 
         if user and user.authenticate(password):
             access_token = create_access_token(identity=str(user.id))
             return make_response(jsonify(token=access_token, user=UserSchema().dump(user)), 200)
         
-        return {'error': ['401 Unauthorized']}, 401
+        return {'error': ['Unauthorized: invalid credentials']}, 401
 
 #Round Routes
 class RoundIndex(Resource):

@@ -39,3 +39,7 @@ body {
 .card {
   padding: 2em;
 }
+
+.error {
+  color: red;
+}

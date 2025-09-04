@@ -15,16 +15,20 @@ export default function LoginForm({onLogin}) {
 			const response = await fetch("http://127.0.0.1:5555/login", {
 				method: "POST",
 				headers:{"Content-Type": "application/json"},
-				body:JSON.stringify({username, password})
+				body:JSON.stringify({
+					username: username.trim(), 
+					password})
 			});
-			if (!response.ok) {
-				throw new Error(`${response.status}`);
-			}
 			const data = await response.json();
+			
+			if (!response.ok) {
+      			throw new Error(data.error?.[0] || "Login Failed!");
+			}
+			
 			onLogin?.(data.token, data.user);
 		} catch (error) {
 			console.error("Login request failed:", error)
-			setError(`Login request failed: ${error.message}`);
+			setError(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -56,9 +60,12 @@ export default function LoginForm({onLogin}) {
 					/>
 				</label>
 			</div>
+
+			{error && <p className="error"> {error}</p>}
+
 			<div className="button">
 				<button type="submit">
-					Login
+					{loading ? "Logging in..." : "Login"}
 				</button>
 			</div>
 		</form>
