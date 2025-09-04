@@ -8,6 +8,8 @@ export default function NewRoundForm(){
 	const [submitting, setSubmitting] = useState(false);
 	const [error, setError] = useState(null);
 
+  const [showAddHole, setShowAddHole] = useState(false);
+
   const [roundData, setRoundData] = useState({
 		course_name: "",
 		course_external_id: 1234,
@@ -19,20 +21,7 @@ export default function NewRoundForm(){
 	})
 
   //Array of holes, will now have a shots array per hole
-  const [holesData, setHolesData] = useState([{
-		hole_number: 1,
-		par: 3,
-		score: 1,
-    shots: [{
-      stroke_number: 1,
-      start_distance: "",
-      unit: "yd",
-      surface: "tee",
-      penalty: 0,
-      club: "",
-      notes: "",
-    }]
-	}])
+  const [holesData, setHolesData] = useState([])
 
 	
   //update Round, Hole, Shot
@@ -203,8 +192,7 @@ export default function NewRoundForm(){
         holes: "",
         notes: "",
       });
-      setHolesData([{ hole_number: 1, par: 3, score: 1 , shots: [{
-        stroke_number: 1, start_distance: "", unit: "yd", surface: "tee", penalty: 0, club: "", notes: "" }]}]);
+      setHolesData([]);
 
     } catch (e) {
       setError(e.message);
@@ -230,7 +218,7 @@ export default function NewRoundForm(){
         removeShotRow={removeShotRow}
       />
 	
-			<button type="submit" disabled={submitting} className="submitBtn">
+			<button type="submit" disabled={submitting} className="submit_button">
 				{submitting ? "Saving..." : "Save"}
 			</button>
 		</form>

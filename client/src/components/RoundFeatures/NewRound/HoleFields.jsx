@@ -4,7 +4,7 @@ export default function HoleFields({hole, holeIndex, updateHole}){
 
 	return (
     <div className="form_section">
-      <h3 className="h3">Hole</h3>
+
       <div className="row">
         <label className="inlineLabel">
           Hole #

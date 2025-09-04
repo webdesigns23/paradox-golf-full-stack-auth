@@ -8,15 +8,14 @@ export default function HoleList(
 		
 	return(
 		<div className="form_section">
-			<h2>Holes</h2>
 
 			{holes.map((hole, holeIndex) => (
 				<div key={holeIndex}>
 					<div>
-						<h3>Hole {hole.hole_number}</h3>
-						<button type="button" onClick={() => removeHoleRow(holeIndex)}>
+						<button className="remove_button" type="button" onClick={() => removeHoleRow(holeIndex)}>
 							Remove Hole
 						</button>
+						<h3 className="h3">Hole {hole.hole_number}</h3>
 					</div>
 					<HoleFields 
 					hole={hole} 
@@ -33,7 +32,7 @@ export default function HoleList(
 					/>
 				</div>
 			))}
-			<button className="form_button" type="button" onClick={addHoleRow}>Add Hole</button>			
+			<button className="add_button" type="button" onClick={addHoleRow}>Add Hole</button>			
 		</div>
 	)
 }

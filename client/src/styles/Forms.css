@@ -6,6 +6,7 @@
   --portal: #39ff14;
   --rick: #40c4ff;
   --morty: #ffd166;
+  --kirk: red;
 }
 
 .form_section {
@@ -53,13 +54,41 @@ h2 {
   margin: 0.5rem;
   border: outset aqua;
   border-radius: 8px;
-  background: var(--portal);
   color: #000;
   font-weight: bold;
   cursor: pointer;
 }
 
-button[type="button"] {
+/* button[type="button"] {
   background: var(--rick);
   color: #000;
+} */
+
+.add_button {
+  margin: 0.5rem;
+  border: outset rgb(30, 255, 0);
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.remove_button {
+  margin: 0.5rem;
+  border: outset var(--kirk);
+  border-radius: 8px;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.row {
+  display: flex;
+}
+
+.submit_button {
+  background-color: var(--rick);
+  border: outset rgb(241, 111, 241);
+  padding: 5px;
+  width: 250px;
 }
