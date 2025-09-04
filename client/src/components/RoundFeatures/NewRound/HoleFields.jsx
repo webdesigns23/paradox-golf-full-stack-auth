@@ -3,9 +3,8 @@
 export default function HoleFields({hole, holeIndex, updateHole}){
 
 	return (
-    <div className="form_section">
-
-      <div className="row">
+    <>
+      <span className="row">
         <label className="inlineLabel">
           Hole #
 		  <input className="input"
@@ -40,7 +39,7 @@ export default function HoleFields({hole, holeIndex, updateHole}){
             onChange={(e) => updateHole(holeIndex, "score", e.target.value)}
           />
         </label>
-      </div>
-    </div>
+      </span>
+    </>
   );
 }

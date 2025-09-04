@@ -23,7 +23,7 @@ export default function RoundDetails() {
 				{holes.map((h) => (
 					<div key={h.id}>
 						<h2>Hole {h.hole_number}</h2>
-						<p>Par: {h.par ?? "-"} - Score: {h.par ?? "-"}</p>	
+						<p>Par: {h.par ?? "-"} - Score: {h.score ?? "-"}</p>	
 
 						{h.shots?.length ? (
 								<ul style={{ marginTop: ".5rem" }}>

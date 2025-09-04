@@ -4,7 +4,7 @@ export default function ShotList(
 	{shots=[], holeIndex, updateShot, addShotRow, removeShotRow}
 ) {
 	return(
-		<div className="form_section">			
+		<>			
 
 			{shots.map((shot, shotIndex) => (
 				<div key={shotIndex}> 
@@ -22,11 +22,13 @@ export default function ShotList(
 						onRemove={() => removeShotRow(holeIndex, shotIndex)} 
 						/>						
 				</div>
+
+				
 			))}
 
 			<button className="add_button" type="button" onClick={() => addShotRow(holeIndex)}>
 				Add Shot
 			</button>	
-		</div>
+		</>
 	)
 }

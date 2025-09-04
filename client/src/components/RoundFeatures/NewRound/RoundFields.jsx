@@ -4,7 +4,8 @@ export default function RoundFields({roundData, updateRound}) {
 
 	return (
 		<div className="form_section">
-			<h3 className="h3">Round</h3>
+		<h3 className="h3">Round</h3>
+		<span className="row">
 
 			<label className="label">
 				Course Name
@@ -39,7 +40,8 @@ export default function RoundFields({roundData, updateRound}) {
 					placeholder="YYYY-MM-DD"
 				/>
 			</label>
-
+		</span>
+		<span className="row">
 			<label className="label">
 				Tee
 				<select className="input"
@@ -77,7 +79,8 @@ export default function RoundFields({roundData, updateRound}) {
 					<option value="18">18</option>
 				</select>
 			</label>
-
+		</span>	
+		
 			<label className="label">
 				Notes
 				<textarea className="textarea"
@@ -88,6 +91,7 @@ export default function RoundFields({roundData, updateRound}) {
 					placeholder="how was your round?"
 				/>
 			</label>
+		
 		</div>
 	);
 }

@@ -5,7 +5,7 @@ export default function ShotFields(
 ) {
 
 	return (
-		<div className="form_section">
+		<div>
 			<label className="label">
 				Stroke #
 				<input className="input"

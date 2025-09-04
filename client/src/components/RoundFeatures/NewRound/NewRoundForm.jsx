@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom"
+import { useNavigate} from "react-router-dom";
 import {RoundContext} from "../../../context/RoundContext";
 import RoundFields from "./RoundFields";
 import HoleList from "./HoleList";
@@ -67,15 +67,7 @@ export default function NewRoundForm(){
         hole_number: prev.length + 1,
         par: 3,
         score: 1,
-        shots: [{ 
-          stroke_number: prev.length + 1, 
-          start_distance: "", 
-          unit: "yd", 
-          surface: "fairway", 
-          penalty: 0, 
-          club: "", 
-          notes: "" },
-        ]
+        shots: []
       }
       
     ]);

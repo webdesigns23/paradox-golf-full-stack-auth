@@ -142,7 +142,6 @@ class RoundDetails(Resource):
             return {'error': ['No rounds found']}, 404
         
         return RoundSchema().dump(round),200
-
         
     @jwt_required()
     def patch(self, round_id):
@@ -166,7 +165,6 @@ class RoundDetails(Resource):
         except Exception as error:
             db.session.rollback()
             return {'error': ['Server error']}, 500
-
 
     @jwt_required()
     def delete(self, round_id):
