@@ -26,7 +26,6 @@ export default function NavBar({user, setUser}){
 			<NavLink to="/dashboard">Dashboard</NavLink>
 			<NavLink to="/courses">Courses</NavLink>
 			<NavLink to="/rounds">Rounds</NavLink>
-			<NavLink to="/stats">Stats</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
 		<button variant="outline" onClick={handleLogout}>
 			Logout

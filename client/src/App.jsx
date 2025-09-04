@@ -9,7 +9,6 @@ import Courses from "./pages/Courses";
 import Rounds from "./pages/Rounds";
 import AddRound from "./components/RoundFeatures/AddRound";
 import RoundDetails from "./components/RoundFeatures/RoundDetails"
-import Stats from "./pages/Stats";
 import Challenges from "./pages/Challenges";
 import NavBar from "./components/NavBar";
 
@@ -47,7 +46,6 @@ export default function App() {
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />
-          <Route path="/stats" element={<Stats />} />
           <Route path="/challenges" element={<Challenges />} />
         </Routes>
       </BrowserRouter>

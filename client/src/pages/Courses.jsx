@@ -54,6 +54,32 @@ export default function Courses(){
 							<h2>{course?.course_name}</h2>
 							<p>Course # {course?.id}</p>
 							<p>{course.location?.address}</p>
+
+							{course.tees?.female && (
+							<div>
+								<h4>Male Tees</h4>
+								<ul>
+									{course.tees.female.map((tee, i) => (
+										<li key={i}>
+											{tee.tee_name} - {tee.total_yards} yards, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
+										</li>
+									))}
+								</ul>
+							</div>
+							)}	
+
+							{course.tees?.male && (
+							<div>
+								<h4>Male Tees</h4>
+								<ul>
+									{course.tees.male.map((tee, i) => (
+										<li key={i}>
+											{tee.tee_name} - {tee.total_yards} yards, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
+										</li>
+									))}
+								</ul>
+							</div>
+							)}	
 						</div>
 						)
 					)}
