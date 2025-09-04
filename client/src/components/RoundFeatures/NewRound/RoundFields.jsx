@@ -4,8 +4,7 @@ export default function RoundFields({roundData, updateRound}) {
 
 	return (
 		<div className="form_section">
-		<h3 className="h3">Round</h3>
-		
+		<h3 className="h3">Course Information</h3>
 
 			<label className="label">
 				Course Name
@@ -74,9 +73,10 @@ export default function RoundFields({roundData, updateRound}) {
 					value={roundData.holes}
 					onChange={updateRound}
 				>
-					<option value="Front 9">Front 9</option>
-					<option value="Back 9">Back 9</option>
-					<option value="18">18</option>
+					<option value="">Select holes played ...</option>
+					<option value="front9">Front 9</option>
+					<option value="back9">Back 9</option>
+					<option value="18">18 Holes</option>
 				</select>
 			</label>
 		

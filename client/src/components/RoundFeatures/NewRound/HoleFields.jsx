@@ -5,18 +5,10 @@ export default function HoleFields({hole, holeIndex, updateHole}){
 	return (
     <>
       <span className="row">
-        <label className="inlineLabel">
-          Hole #
-		  <input className="input"
-            type="number"
-            name="hole_number"
-            min={1}
-            max={18}
-            value={hole.hole_number}
-            onChange={(e) => updateHole(holeIndex, "hole_number", e.target.value)}
-          />
-        </label>
-
+        <div className="inlineLabel">
+          <h3 className="h3">Hole {hole.hole_number}</h3>
+        </div>
+        
         <label className="inlineLabel">
           Hole Par
 		  <input className="input"

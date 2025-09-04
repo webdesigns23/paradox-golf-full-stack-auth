@@ -25,11 +25,46 @@ export default function NewRoundForm(){
   //Array of holes, will now have a shots array per hole
   const [holesData, setHolesData] = useState([])
 
+  //auto make rows base on selection
+  function generateHoles(selection) {
+    if (selection === "front9") {
+      return Array.from({ length: 9 }, (_,i) => ({
+        hole_number: i + 1,
+        par: 3,
+        score: 1
+      }));
+    }
+    if (selection === "back9") {
+      return Array.from({ length: 9 }, (_,i) => ({
+        hole_number: 10 + i,
+        par: 3,
+        score: 1
+      }));
+    }
+    if (selection === "18") {
+      return Array.from({ length: 18 }, (_,i) => ({
+        hole_number: i + 1,
+        par: 3,
+        score: 1
+      }));
+    }
+    return [];
+  }
+  
+  function handleGenerateHoles() {
+    if (!roundData.holes) return;
+    setHolesData(generateHoles(roundData.holes));
+  }
+
+  function handleClearHoles() {
+    setHolesData([]);
+  }
+
 	
   //update Round
 	function updateRound(e) {
 		const { name, value } = e.target;
-    const numericFields = ["holes", "course_external_id"];
+    const numericFields = ["course_external_id"];
 		setRoundData((prev) => ({ ...prev, 
       [name]: numericFields.includes(name) && value !== "" ? Number(value) : value }));
 	}
@@ -44,21 +79,23 @@ export default function NewRoundForm(){
    );
 	}
 
-  //add holes fields
-  function addHoleRow() {
-    setHolesData((prev) => [
-      ...prev,
-      {hole_number: prev.length + 1, par: 3, score: 1}  
-    ]);
-  }
+  const startNum = roundData.holes === "front9" ? 1 : 10;
 
-  //remove holes fields
-  function removeHoleRow(holeIndex) {
-    setHolesData((prev) => {
-      const nextHole = prev.filter((_, i) => i !== holeIndex);
-      return nextHole.map((h, i) => ({ ...h, hole_number: i +1}));
-    });
-  }
+  // //add holes fields
+  // function addHoleRow() {
+  //   setHolesData((prev) => {
+  //     const nextNumber = prev.length ? prev[prev.length - 1].hole_number + 1 : startNum;
+  //     return [...prev, { hole_number: nextNumber, par: 3, score: 1 }];
+  //   });
+  // }
+
+  // //remove holes fields
+  // function removeHoleRow(holeIndex) {
+  //   setHolesData((prev) => {
+  //     const nextHole = prev.filter((_, i) => i !== holeIndex);
+  //     return nextHole.map((h, i) => ({ ...h, hole_number: startNum + i}));
+  //   });
+  // }
 
 	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");
@@ -129,17 +166,32 @@ export default function NewRoundForm(){
   
 	return(
 		<form onSubmit={handleSubmit} className="form">
-			<h2>Add New Round</h2>
 			{error && <div className="error"> Error: {error}</div>}
 
 			<RoundFields roundData={roundData} updateRound={updateRound}/>
 
+      {/*Generate holes or clear*/}
+      <div className="form_selection">
+        <button type="button" className="add_button" 
+        onClick={handleGenerateHoles} 
+        disabled={!roundData.holes} 
+        title={roundData.holes ? "" : "Select Front 9 /Back 9/ or 18 Holes first!"}>
+        Add Scores
+        </button>
+        {holesData.length > 0 && (
+          <button type="button"
+          className="remove_button"
+          onClick={handleClearHoles}>
+            Clear Holes
+          </button>
+        )}
+      </div>
+      {holesData.length > 0 && (
 			<HoleList
         holes={holesData} 
         updateHole={updateHole}
-        addHoleRow={addHoleRow}
-        removeHoleRow={removeHoleRow}
-      />
+      />        
+      )}
       
 			<button type="submit" disabled={submitting} className="submit_button">
 				{submitting ? "Saving..." : "Save"}

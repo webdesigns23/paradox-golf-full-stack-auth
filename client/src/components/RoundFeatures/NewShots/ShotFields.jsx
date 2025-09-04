@@ -6,7 +6,7 @@ export default function ShotFields(
 
 	return (
 		<div>
-			<label className="label">
+			{/* <label className="label">
 				Stroke #
 				<input className="input"
 					type="number"
@@ -14,7 +14,7 @@ export default function ShotFields(
 					value={shot.stroke_number}
 					onChange={(e) => updateShot(holeIndex, shotIndex, "stroke_number", e.target.value)}
 				/>
-			</label>
+			</label> */}
 
 			<label className="label">
 				Start Distance
@@ -85,7 +85,8 @@ export default function ShotFields(
 					placeholder="how was your shot?"
 				/>
 			</label>
-			 <button type="button" onClick={onRemove}>Remove Shot</button>
+			 <button type="button" onClick={onRemove}>x</button>
 		</div>
 	);
 }
+
