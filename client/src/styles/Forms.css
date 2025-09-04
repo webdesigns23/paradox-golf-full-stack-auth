@@ -1,0 +1,65 @@
+
+:root {
+  --bg: #0c0f12;
+  --card: #1a1f26;
+  --text: #e7f7ff;
+  --portal: #39ff14;
+  --rick: #40c4ff;
+  --morty: #ffd166;
+}
+
+.form_section {
+  background: var(--card);
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+}
+
+h2 {
+	padding: 1px;
+	margin: 1px;
+}
+
+.h3 {
+  margin-bottom: 0.5rem;
+  color: var(--rick);
+  text-shadow: 0 0 6px rgb(230, 104, 81);
+}
+
+.label, .inlineLabel {
+  display:flex;
+  flex-direction:column;
+  font-size: 0.9rem;
+  color: var(--morty);
+  margin-bottom: 0.5rem;
+}
+
+.input, .textarea, select.input {
+  background: #0f1418;
+  color: var(--text);
+  border: 1px solid var(--rick);
+  border-radius: 6px;
+  padding: 0.5rem;
+}
+
+.input:focus, .textarea:focus, select.input:focus {
+  border-color: var(--portal);
+  outline: none;
+}
+
+.textarea { min-height: 70px; }
+
+.form_button {
+  margin: 0.5rem;
+  border: outset aqua;
+  border-radius: 8px;
+  background: var(--portal);
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button[type="button"] {
+  background: var(--rick);
+  color: #000;
+}

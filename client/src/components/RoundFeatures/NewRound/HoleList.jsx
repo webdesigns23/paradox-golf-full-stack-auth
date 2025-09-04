@@ -33,7 +33,7 @@ export default function HoleList(
 					/>
 				</div>
 			))}
-			<button type="button" onClick={addHoleRow}>Add Hole</button>			
+			<button className="form_button" type="button" onClick={addHoleRow}>Add Hole</button>			
 		</div>
 	)
 }

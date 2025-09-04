@@ -18,7 +18,7 @@ export default function ShotList(
 				/>
 			))}
 			
-			<button type="button" onClick={() => addShotRow(holeIndex)}>
+			<button className="form_button" type="button" onClick={() => addShotRow(holeIndex)}>
 				Add Shot
 			</button>	
 		</div>

@@ -1,4 +1,4 @@
-
+import "../../../styles/Forms.css"
 
 export default function RoundFields({roundData, updateRound}) {
 
