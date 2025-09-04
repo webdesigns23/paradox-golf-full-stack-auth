@@ -14,6 +14,13 @@ export default function SignUpForm({onLogin}) {
 	async function handleSignup(e) {
 		e.preventDefault();
 		setError(null);
+		setUsernameError(null);
+		setPasswordError(null);
+
+		if (password !== passwordConfirmation) {
+			setPasswordError("Passwords do not match, try again!");
+			return;
+		}
 
 		try {
 			setLoading(true);
@@ -26,14 +33,32 @@ export default function SignUpForm({onLogin}) {
 					password_confirmation: passwordConfirmation, display_name:displayName,
 				})
 			});
-			if (!response.ok) {
-				throw new Error(`${response.status}`);
-			}
 			const data = await response.json();
+
+			if (!response.ok) {
+				if (data?.errors) {
+					setUsernameError(data.errors.username || null);
+					setPasswordError(
+						data.errors.password || data.errors.password_confirmation || null
+					);
+					setError(
+						data.errors.display_name ||
+						data.errors.non_field ||
+						null
+					);
+				} else if (typeof data?.error === "string") {
+					setError(data.error);
+				} else {
+					setError("Signup failed. Please try again.");
+				}
+				return;
+}
+						
 			onLogin?.(data.token, data.user);
+
 		} catch (error) {
-			console.error("Login request failed:", error)
-			setError(`Login request failed: ${error.message}`);
+			console.error("Signup request failed:", error)
+			setError(`Signup request failed: ${error.message}`);
 		} finally {
 			setLoading(false);
 		}
@@ -52,6 +77,8 @@ export default function SignUpForm({onLogin}) {
 					maxLength={35}
 					/>
 				</label>
+				{usernameError && <p className="error">{usernameError}</p>}
+
 			</div>
 			<div className="form_field">
 				<label> Password:
@@ -76,6 +103,8 @@ export default function SignUpForm({onLogin}) {
 					maxLength={35}
 					/>
 				</label>
+				{passwordError && <p className="error">{passwordError}</p>}
+
 			</div>
 			<div className="form_field">
 				<label> Display Name:
@@ -89,9 +118,12 @@ export default function SignUpForm({onLogin}) {
 					/>
 				</label>
 			</div>
+
+			{error && <p className="error"> {error}</p>}
+
 			<div className="button">
-				<button type="submit">
-					Sign Up
+				<button type="submit" disabled={loading}>
+					{loading ? "Signing Up..." : "Sign Up"}
 				</button>
 			</div>
 		</form>

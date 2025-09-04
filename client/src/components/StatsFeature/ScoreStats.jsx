@@ -61,21 +61,6 @@ export default function ScoreStats() {
 		run();
 	}, [rounds]);
 
-	// const { holes, loading, error, totalStrokes, roundId } = useRoundHoles(roundId);
-
-	// let birdieOrBetter = 0, pars = 0, bogeys = 0, doublesPlus = 0;
-
-	// holes.forEach(h => {
-	// 	const par = Number(h.par ?? 0);
-	// 	const score = Number(h.score ?? 0);
-    // 	if (!par || !score) return;
-    // 	const diff = score - par;
-    // 	if (diff <= -1) birdieOrBetter++;
-    // 	else if (diff === 0) pars++;
-    // 	else if (diff === 1) bogeys++;
-    // 	else doublesBogeys++;
-	// })
-
 	if (roundsLoading || loading) return <div>Loading…</div>;
   	if (roundsError) return <div>{roundsError}</div>;
   	if (error) return <div>{error}</div>;
