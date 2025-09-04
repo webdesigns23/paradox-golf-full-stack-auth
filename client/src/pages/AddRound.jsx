@@ -1,4 +1,4 @@
-import NewRoundForm from "./NewRound/NewRoundForm"
+import NewRoundForm from "../components/RoundFeatures/NewRound/NewRoundForm"
 
 export default function AddRound() {
 	return (

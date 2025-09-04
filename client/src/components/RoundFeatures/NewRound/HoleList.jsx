@@ -1,10 +1,6 @@
 import HoleFields from "./HoleFields"
-import ShotList from "./ShotList"
 
-export default function HoleList(
-	{holes, updateHole, addHoleRow, removeHoleRow, 
-	updateShot, addShotRow, removeShotRow}
-	) {
+export default function HoleList({holes, updateHole, addHoleRow, removeHoleRow}) {
 		
 	return(
 		<div className="form_section">
@@ -21,14 +17,6 @@ export default function HoleList(
 					hole={hole} 
 					holeIndex={holeIndex} 
 					updateHole={updateHole} 
-					/>
-
-					<ShotList 
-					shots={hole.shots}
-					holeIndex={holeIndex}
-					updateShot={updateShot} 
-					addShotRow={addShotRow} 
-					removeShotRow={removeShotRow}
 					/>
 				</div>
 			))}

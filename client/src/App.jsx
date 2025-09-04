@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import Rounds from "./pages/Rounds";
-import AddRound from "./components/RoundFeatures/AddRound";
+import AddRound from "./pages/AddRound";
 import RoundDetails from "./components/RoundFeatures/RoundDetails"
 import Challenges from "./pages/Challenges";
 import NavBar from "./components/NavBar";
