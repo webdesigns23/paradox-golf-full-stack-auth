@@ -19,7 +19,6 @@ export default function NewRoundForm(){
 		notes: "",
 	})
 
-
   const navigate = useNavigate();
 
   //Array of holes, will now have a shots array per hole
@@ -80,22 +79,6 @@ export default function NewRoundForm(){
 	}
 
   const startNum = roundData.holes === "front9" ? 1 : 10;
-
-  // //add holes fields
-  // function addHoleRow() {
-  //   setHolesData((prev) => {
-  //     const nextNumber = prev.length ? prev[prev.length - 1].hole_number + 1 : startNum;
-  //     return [...prev, { hole_number: nextNumber, par: 3, score: 1 }];
-  //   });
-  // }
-
-  // //remove holes fields
-  // function removeHoleRow(holeIndex) {
-  //   setHolesData((prev) => {
-  //     const nextHole = prev.filter((_, i) => i !== holeIndex);
-  //     return nextHole.map((h, i) => ({ ...h, hole_number: startNum + i}));
-  //   });
-  // }
 
 	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");

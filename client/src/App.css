@@ -43,3 +43,30 @@ body {
 .error {
   color: red;
 }
+
+
+/* Courses Played */
+.courses {
+  padding: 1rem;
+}
+
+.course-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.course-item {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem 0;
+}
+
+.course-name {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.course-id {
+  font-size: 0.85rem;
+  color: #666;
+}
