@@ -2,11 +2,18 @@
   max-width: 95%;
   margin: 15px;
   text-align: center;
+  background: black;
 }
 
 body {
   margin-left: 150px;
+  background: black;
 }
+
+/* img {
+  border: solid rgb(102, 255, 0);
+  box-shadow: 0 0 20px rgb(33, 226, 59);
+} */
 
 .logo {
   height: 6em;

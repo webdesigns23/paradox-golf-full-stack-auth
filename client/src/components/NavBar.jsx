@@ -17,7 +17,7 @@ export default function NavBar({user, setUser}){
 
 	return(
 		<nav className="navbar">
-		<img src={logo} width="100%" alt="meeseeks on golf course"/>
+		<img src={logo} width="100%" alt="paradox golf logo"/>
 		
 		<h2>welcome {user?.username}</h2>
 

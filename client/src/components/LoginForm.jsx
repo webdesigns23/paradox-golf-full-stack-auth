@@ -47,8 +47,6 @@ export default function LoginForm({onLogin}) {
 					maxLength={35}
 					/>
 				</label>
-			</div>
-			<div className="form_field">
 				<label> Password:
 					<input 
 					type="password" 

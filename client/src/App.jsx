@@ -54,7 +54,10 @@ export default function App() {
     setUser(user)
   }
   
-  if (checkAuth) return <img src={meeseekTip} width="95%" margin-top="200px" alt="meeseeks on golf course"/>
+  if (checkAuth) return <div>  
+    <img src={meeseekTip} width="95%" margin-top="200px" alt="meeseeks on golf course"/>
+    <h1>Meeseeks Golf Tip #1</h1>
+    </div>
   if (!user) return <Login onLogin={onLogin}/>;
 
   return (

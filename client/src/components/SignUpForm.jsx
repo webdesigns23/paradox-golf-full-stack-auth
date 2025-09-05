@@ -78,9 +78,6 @@ export default function SignUpForm({onLogin}) {
 					/>
 				</label>
 				{usernameError && <p className="error">{usernameError}</p>}
-
-			</div>
-			<div className="form_field">
 				<label> Password:
 					<input 
 					type="password" 
@@ -91,8 +88,6 @@ export default function SignUpForm({onLogin}) {
 					maxLength={35}
 					/>
 				</label>
-			</div>
-			<div className="form_field">
 				<label> Confirm Password:
 					<input 
 					type="password" 
@@ -104,9 +99,6 @@ export default function SignUpForm({onLogin}) {
 					/>
 				</label>
 				{passwordError && <p className="error">{passwordError}</p>}
-
-			</div>
-			<div className="form_field">
 				<label> Display Name:
 					<input 
 					type="text" 
@@ -118,7 +110,6 @@ export default function SignUpForm({onLogin}) {
 					/>
 				</label>
 			</div>
-
 			{error && <p className="error"> {error}</p>}
 
 			<div className="button">

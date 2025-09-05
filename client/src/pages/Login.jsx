@@ -8,23 +8,23 @@ export default function Login({onLogin}) {
 	const [showSignup, setShowSignup] = useState(false);
 
 return (
-    <>
-      <img src={logo} alt="Paradox Golf Logo" width="90%" />
+        <>
+          <img src={logo} alt="Paradox Golf Logo" width="90%" />
 
-      {showSignup ? (
-        <SignUpForm onLogin={onLogin} />
-      ) : (
-        <LoginForm onLogin={onLogin} />
-      )}
+          {showSignup ? (
+            <SignUpForm onLogin={onLogin} />
+          ) : (
+            <LoginForm onLogin={onLogin} />
+          )}
 
-      <hr />
-      <p>
-        {showSignup ? "Already have an account?" : "Don't have an account?"}
-		<br/>
-        <button onClick={() => setShowSignup(prevState => !prevState)}>
-          {showSignup ? "Back to Login" : "Sign Up Now!"}
-        </button>
-      </p>
-    </>
+          <hr />
+          <p>
+            {showSignup ? "Already have an account?" : "Don't have an account?"}
+        <br/>
+            <button onClick={() => setShowSignup(prevState => !prevState)}>
+              {showSignup ? "Back to Login" : "Sign Up Now!"}
+            </button>
+          </p>
+        </>
   );
 }
