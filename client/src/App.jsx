@@ -12,27 +12,49 @@ import AddShots from "./pages/AddShots";
 import RoundDetails from "./components/RoundFeatures/RoundDetails"
 import Challenges from "./pages/Challenges";
 import NavBar from "./components/NavBar";
+import meeseekTip from "./assets/images/meeseeks/golf_tip.PNG"
 
 export default function App() {
   const [user, setUser] = useState(null);
+  const [checkAuth, setCheckAuth] = useState(true);
+
 
   useEffect(() => {
-    fetch("/me", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setCheckAuth(false);
+      return;
     }
-    ).then((r) => {
-      if (r.ok) {
-        r.json().then((user) => setUser(user));
+    (async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:5555/me" ,{
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const me = await response.json();
+          setUser(me);
+        } else if (response.status === 401) {
+          localStorage.removeItem("token");
+          setUser(null);
+        }
+      } catch (_) {
+        setUser(null);
+      } finally {
+        setCheckAuth(false);
       }
-    });
-  }, []);
+    })();
+  },[]);
+
 
   const onLogin = (token, user) => {
     localStorage.setItem("token", token);
     setUser(user)
   }
+  
+  if (checkAuth) return <img src={meeseekTip} width="95%" margin-top="200px" alt="meeseeks on golf course"/>
   if (!user) return <Login onLogin={onLogin}/>;
 
   return (
