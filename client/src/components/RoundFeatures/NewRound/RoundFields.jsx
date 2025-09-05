@@ -26,6 +26,7 @@ export default function RoundFields({roundData, updateRound}) {
 					value={roundData.course_external_id}
 					onChange={updateRound}
 					placeholder="course #"
+					
 				/>
 			</label>
 
@@ -37,6 +38,7 @@ export default function RoundFields({roundData, updateRound}) {
 					value={roundData.date}
 					onChange={updateRound}
 					placeholder="YYYY-MM-DD"
+					required
 				/>
 			</label>
 		
@@ -47,6 +49,7 @@ export default function RoundFields({roundData, updateRound}) {
 					name="tee"
 					value={roundData.tee}
 					onChange={updateRound}
+					required
 				>
 					<option value="male">Mens Tees</option>
 					<option value="female">Ladies Tees</option>
@@ -61,6 +64,7 @@ export default function RoundFields({roundData, updateRound}) {
 					value={roundData.tee_name}
 					onChange={updateRound}
 					placeholder="1, 2, 3, white, gold, black, etc."
+					required
 				/>
 			</label>
 
@@ -72,6 +76,7 @@ export default function RoundFields({roundData, updateRound}) {
 					name="holes"
 					value={roundData.holes}
 					onChange={updateRound}
+					required
 				>
 					<option value="">Select holes played ...</option>
 					<option value="front9">Front 9</option>

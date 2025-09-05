@@ -45,8 +45,8 @@ export default function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />
-          <Route path="/rounds/new/shots" element={<AddShots />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />
+          <Route path="/rounds/:id/shots" element={<AddShots />} />
           <Route path="/challenges" element={<Challenges />} />
         </Routes>
       </BrowserRouter>

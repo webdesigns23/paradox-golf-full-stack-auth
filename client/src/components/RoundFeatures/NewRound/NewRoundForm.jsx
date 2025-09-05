@@ -138,7 +138,7 @@ export default function NewRoundForm(){
       });
       setHolesData([]);
 
-      navigate("/rounds/new/shots");
+      navigate(`/rounds/${createdRound.id}/shots`);
     
     } catch (e) {
       setError(e.message);
