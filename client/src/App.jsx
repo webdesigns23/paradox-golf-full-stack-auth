@@ -66,7 +66,7 @@ export default function App() {
       <NavBar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<Home/>} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard user={user} setUser={setUser} />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />

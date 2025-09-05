@@ -1,4 +1,4 @@
-/* :root {
+:root {
   --bg: #0c0f12;
   --card: #1a1f26;
   --text: #e7f7ff;
@@ -84,7 +84,7 @@ h2 {
   font-weight: bold;
   cursor: pointer;
   width:fit-content
-} */
+}
 
 /* Login Form */
 .login_form, .signup_form {
@@ -157,3 +157,12 @@ h2 {
   border: ridge rgb(255, 240, 157);
 }
 
+.login_logo img {
+  animation: portalSpin 30s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes portalSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}

@@ -40,16 +40,30 @@ html, body, #root {
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
+  color: white;
+  padding: 20px;
+  border-bottom: 3px solid aqua;
+  box-shadow: 0 4px 15px aqua;
+  border-radius: 15px;
+  animation: borderPulse 2s infinite ease-in-out;
+}
+
+@keyframes borderPulse {
+  0%   { box-shadow: 0 4px 8px aqua; }
+  50%  { box-shadow: 0 4px 20px #39ff14; }
+  100% { box-shadow: 0 4px 8px aqua; }
 }
 
 h2 {
-  color: rgb(67, 226, 115);
+  color: rgb(71, 217, 236);
   text-transform: capitalize;
+  text-shadow: 0 0 6px rgb(230, 104, 81)
 }
 
 p {
-  color: aqua;
+  color: rgb(253, 255, 251);
   font-size: 18px;
+  
 }
 
 button {

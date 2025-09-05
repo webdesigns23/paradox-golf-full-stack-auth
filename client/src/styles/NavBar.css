@@ -42,3 +42,14 @@
   box-shadow: inset 0 0 0 1px rgba(212,178,92,0.35);
 }
 
+button.logout_btn {
+  width: 125px;
+  background-color: rgb(41, 44, 39);
+  border: none;
+  color: rgb(94, 255, 0);
+  padding: 5px;
+  color: #f0d79a;
+  background: rgba(212,178,92,0.12);   /* soft gold tint */
+  box-shadow: inset 0 0 0 1px rgba(212,178,92,0.35);
+}
+

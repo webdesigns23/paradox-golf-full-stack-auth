@@ -17,8 +17,12 @@ export default function NavBar({user, setUser}){
 
 	return(
 		<nav className="navbar">
+		<button className="logout_btn" onClick={handleLogout}>
+			Logout
+		</button>	
+
 		<img src={logo} width="100%" alt="paradox golf logo"/>
-		
+
 		<h2>welcome {user?.username}</h2>
 
 		<ul className="nav-links">
@@ -27,10 +31,6 @@ export default function NavBar({user, setUser}){
 			<NavLink to="/courses">Courses</NavLink>
 			<NavLink to="/rounds">Rounds</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
-		<button variant="outline" onClick={handleLogout}>
-			Logout
-		</button>
-       		
 		</ul>
     </nav>
 	)
