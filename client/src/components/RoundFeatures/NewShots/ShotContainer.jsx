@@ -1,6 +1,6 @@
 import ShotList from "./ShotList";
 
-export default function ShotContainer({hole, holeIndex, shot, shotIndex, holesData, setHolesData}) {
+export default function ShotContainer({hole, holeIndex, setHolesData}) {
 
 	//Update Shots
 	function updateShot(holeIndex, shotIndex, name, initialValue) {

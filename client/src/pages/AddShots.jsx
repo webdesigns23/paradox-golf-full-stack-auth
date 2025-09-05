@@ -5,23 +5,12 @@ import ShotContainer from "../components/RoundFeatures/NewShots/ShotContainer";
 
 export default function AddShots(){
 	const {id: roundId } = useParams();
-	const { rounds, setRounds } = useContext(RoundContext);
+	const { setRounds } = useContext(RoundContext);
 	const navigate = useNavigate();
 	
 	const [ holes, setHoles] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-
-	const [roundData, setRoundData] = useState({
-			course_name: "",
-			course_external_id: 1234,
-			date: new Date().toISOString().split("T")[0],
-			tee: "",
-			tee_name: "",
-			holes: "",
-			notes: "",
-		})
-
 
 	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");
@@ -52,7 +41,7 @@ export default function AddShots(){
         setError(null);
 
         const roundRes = await fetch(`http://127.0.0.1:5555/rounds/${roundId}`, {
-          headers: getHeaders(),
+          headers: authHeaders,
         });
         if (!roundRes.ok) throw new Error(`Load round failed: ${roundRes.status}`);
         const round = await roundRes.json();
@@ -82,78 +71,81 @@ export default function AddShots(){
     })();
   }, [roundId]);
 
+  //save shots
+  async function handleSaveShots() {
+	try {
+		setError(null);
+		const requests = [];
 
+		//check for holes
+		for (const hole of holes) {
+			if (!hole?.id) continue;
 
-// 	//handle form submit
-// 	async function handleSubmit(e) {
-//     e.preventDefault();
-//     setError(null);
-//     setSubmitting(true);
+			//shot data to hole
+			for (const shot of hole.shots || []) {
+				const shotData = 
+				(shot.start_distance !== "" && shot.start_distance != null) ||
+				(shot.penalty && Number(shot.penalty) !==0) ||
+				(shot.club && shot.club.trim()) ||
+				(shot.notes && shot.notes.trim());
 
-//     try {
+			if (!shotData) continue;
 
-//       //Create Shots for that Hole
-//       for (const shot of hole.shots) {
-//         const sRes = await fetch(`http://127.0.0.1:5555/rounds/${createdRound.id}/holes/${createdHole.id}/shots`, {
-//           method: "POST",
-//           headers: authHeaders,
-//           body: JSON.stringify({
-//             stroke_number: shot.stroke_number,
-//             start_distance: shot.start_distance === "" ? null : shot.start_distance,
-//             unit: shot.unit,
-//             surface: shot.surface,
-//             penalty: shot.penalty || 0,
-//             club: shot.club || "",
-//             notes: shot.notes || "",
-//           }),
-//         });
-//         if (!sRes.ok) throw new Error(`Create shot failed: ${sRes.status}`);
-//         await sRes.json();
-//         }
-//       }
-         
-//       // Update context and sort
-      
-//       setRounds(prev => {
-//         const next = [createdRound, ...prev];
-//         next.sort((a,b) => new Date(b.date) - new Date(a.date));
-//         return next;
-//       })
+			requests.push(
+				fetch(`http://127.0.0.1:5555/rounds/${roundId}/holes/${hole.id}/shots`, {
+					method: "POST",
+					headers: authHeaders,
+					body: JSON.stringify({
+						stroke_number: shot.stroke_number,
+						start_distance: shot.start_distance === "" ? null : shot.start_distance,
+						unit: shot.unit,
+						surface: shot.surface,
+						penalty: shot.penalty || 0,
+						club: shot.club || "",
+						notes: shot.notes || "",
+					}),
+				}).then((response) => {
+					if (!response.ok) throw new Error(`Create shot failed: ${response.status}`);
+					return response.json();
+				}));
+			}
+		}
+		await Promise.all(requests);
+		setRounds((prev) => prev);
+		navigate("/rounds");
+		}catch (e) {
+		setError(e.message);
+		}
+	}
 
-//       navigate("/rounds");
+  if (loading) return <p>Loading…</p>;
+  if (error) return <p className="error">Error: {error}</p>;
 
-//       //Reset forms
-//       setRoundData({
-//         course_name: "",
-//         course_external_id: 1234,
-//         date: new Date().toISOString().split("T")[0],
-//         tee: "",
-//         tee_name: "",
-//         holes: "",
-//         notes: "",
-//       });
-//       setHolesData([]);
-
-//     } catch (e) {
-//       setError(e.message);
-//     } finally {
-//       setSubmitting(false);
-//     }
-//   }
-
-
-
-	return(
-		<>
+   	return(
+		<div>
 			<h1>Add Shots</h1>
-			<button>
-				+ Add Shots
-			</button>
-			
 			<Link to={`/rounds`}>
-				<button>No Thanks</button>
-			</Link>	
-			
-		</>
+				<button>No Thanks</button> 
+			</Link>			
+
+			{holes.length === 0 ? (
+				<p>No holes found for this round.</p>
+			) : (
+				holes.map((hole, index) => (
+					<div key={hole.id ?? index}>
+						<h3>Hole {hole.hole_number}</h3>
+						<ShotContainer					
+							hole={hole}
+							holeIndex={index}
+							setHolesData={setHoles}
+						/>
+					</div>
+				))
+			)}
+			<button type="button" 
+			onClick={handleSaveShots}>
+				Save Shots
+			</button>	
+		</div>
 	)
 }
