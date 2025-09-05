@@ -33,7 +33,6 @@ export function RoundsProvider({children}){
 		fetchData()
 	}, [])
 	
-
 	//Delete Round
 	async function deleteRound(round_id) {
 		setError(null)
