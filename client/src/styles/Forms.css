@@ -7,7 +7,7 @@
   --morty: #ffd166;
   --kirk: red;
 }
-/*
+
 .form_section {
   background: var(--card);
   border-radius: 10px;
@@ -67,17 +67,13 @@ h2 {
   cursor: pointer;
 }
 
-
-
-
-
 .submit_button {
   background-color: var(--rick);
   border: outset rgb(241, 111, 241);
   padding: 5px;
   width: 250px;
 }
- */
+
 .remove_button {
   margin: 0.5rem;
   border: outset var(--kirk);

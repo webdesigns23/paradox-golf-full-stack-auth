@@ -33,6 +33,39 @@ export function RoundsProvider({children}){
 		fetchData()
 	}, [])
 	
+	//Update Round
+	async function updateRound(round_id, updates) {
+		setError(null)
+		setLoading(true);
+		
+		const token = localStorage.getItem("token");
+		const data = { ...updates };
+
+		try {			
+			const response = await fetch (`http://127.0.0.1:5555/rounds/${round_id}`,{
+				method: "PATCH",
+				headers:{
+					"Content-Type": "application/json",
+					Accept: "application/json",
+					...(token ? {Authorization: `Bearer ${token}`}: {}),
+				},
+				body: JSON.stringify(data)
+			});
+			if (!response.ok) {
+				throw new Error(`${response.status}`);
+			}
+			const updated = await response.json();
+			setRounds(prev =>
+				prev.map(r => (r.id === round_id ? { ...r, ...updated } : r))
+			);
+			return updated;
+		} catch (error) {
+			setError(`Failed to update round: ${error.message || error}`)
+		} finally {
+			setLoading(false);
+		}
+	}
+
 	//Delete Round
 	async function deleteRound(round_id) {
 		setError(null)
@@ -63,7 +96,7 @@ export function RoundsProvider({children}){
 		rounds, setRounds,
 		loading, setLoading,
 		error, setError,
-		deleteRound,
+		deleteRound, updateRound
 		}}>
 		{children}
 		</RoundContext.Provider>

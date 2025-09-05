@@ -14,8 +14,16 @@ export default function ScoreStats() {
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		async function run() {
-			if (!rounds || rounds.length === 0) {
+		async function runStats() {
+			const token = localStorage.getItem("token");
+			
+			if (!token) {
+				setStats({ birdieOrBetter: 0, pars: 0, bogeys: 0, doublesBogeys: 0, totalStrokes: 0 });
+				setLoading(false)
+				return;
+			}
+
+			if (!Array. isArray(rounds) || rounds.length === 0) {
 				setStats({ birdieOrBetter: 0, pars: 0, bogeys: 0, doublesBogeys: 0, totalStrokes: 0 });
 				setLoading(false);
 				return;
@@ -23,8 +31,9 @@ export default function ScoreStats() {
 			try {
 				setLoading(true);
 				setError(null);
-				const token = localStorage.getItem("token");
+	
 				const headers = {
+					"Content-Type": "application/json",
 					Accept: "application/json",
 					...(token ? { Authorization: `Bearer ${token}` } : {})
 				};
@@ -57,7 +66,7 @@ export default function ScoreStats() {
 				setLoading(false);
 			}
 		}
-		run();
+		runStats();
 	}, [rounds]);
 
 	if (roundsLoading || loading) return <div>Loading…</div>;
