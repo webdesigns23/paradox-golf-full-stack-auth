@@ -1,16 +1,23 @@
 import { Link } from "react-router-dom"
 import AllStats from "../components/StatsFeature/AllStats"
+import course from "../assets/images/course.png";
+import round from "../assets/images/new_round.png";
+import "../styles/Stats.css"
 
-export default function Dashboard() {
+export default function Dashboard({user, setUser}) {
 	return(
 		<>
-			<h1>Dashboard Page</h1>
+			<h1>{(user?.username).toUpperCase()}'S STATS</h1>
+			
+			
 			<Link to={`/rounds/new`}>
-				<button>Add Round</button>
+			<img src={round} />	
+				
 			</Link>	
 			
 			<Link to={`/courses`}>
-				<button>Search Courses</button>
+			<img src={course} />
+			
 			</Link>
 
 			<AllStats />

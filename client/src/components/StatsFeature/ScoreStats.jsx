@@ -73,12 +73,24 @@ export default function ScoreStats() {
   	if (roundsError) return <div>{roundsError}</div>;
   	if (error) return <div>{error}</div>;
 
-	return(
-		<div>
-			<p>Birdie or Better: {stats.birdieOrBetter}</p>
-			<p>Pars: {stats.pars}</p>
-			<p>Bogeys: {stats.bogeys}</p>
-      		<p>Double Bogeys: {stats.doublesBogeys}</p>
+	return (
+		<div className="stats_grid">
+			<div className="stat_card is-good">
+				<span className="stat_label">Birdie or Better</span>
+				<span className="stat_value">{stats.birdieOrBetter}</span>
+			</div>
+			<div className="stat_card">
+				<span className="stat_label">Pars</span>
+				<span className="stat_value">{stats.pars}</span>
+			</div>
+			<div className="stat_card is-warn">
+				<span className="stat_label">Bogeys</span>
+				<span className="stat_value">{stats.bogeys}</span>
+			</div>
+			<div className="stat_card is-bad">
+				<span className="stat_label">Double Bogeys+</span>
+				<span className="stat_value">{stats.doublesBogeys}</span>
+			</div>
 		</div>
-	)
+	);
 }

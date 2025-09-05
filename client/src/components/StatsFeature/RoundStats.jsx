@@ -17,9 +17,20 @@ export default function RoundStats() {
 	const lastPlayed = sorted[sorted.length - 1]?.date;
 
 	return(
-		<div>
-			<p>Rounds Played: {roundsPlayed}</p>
-			<p>Last Played: {lastPlayed}</p>
+		<div className="stats_grid">
+
+			<div className="stat_card">
+			<span className="stat_label">Rounds Played: </span>
+			<span className="stat_card">{roundsPlayed}</span>
+
+			</div>
+
+			<div className="stat_card">
+			<span className="stat_label">Last Played:</span>
+			<span className="stat_value">{lastPlayed}</span>
+
+			</div>
+
 		</div>
 	)
 }
