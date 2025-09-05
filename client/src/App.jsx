@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
 import Rounds from "./pages/Rounds";
 import AddRound from "./pages/AddRound";
+import AddShots from "./pages/AddShots";
 import RoundDetails from "./components/RoundFeatures/RoundDetails"
 import Challenges from "./pages/Challenges";
 import NavBar from "./components/NavBar";
@@ -16,7 +17,6 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // auto-login
     fetch("/me", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -45,6 +45,7 @@ export default function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />
+          <Route path="/rounds/new/shots" element={<AddShots />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />
           <Route path="/challenges" element={<Challenges />} />
         </Routes>

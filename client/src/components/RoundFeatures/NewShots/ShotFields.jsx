@@ -6,15 +6,6 @@ export default function ShotFields(
 
 	return (
 		<div>
-			{/* <label className="label">
-				Stroke #
-				<input className="input"
-					type="number"
-					name="stroke_number"
-					value={shot.stroke_number}
-					onChange={(e) => updateShot(holeIndex, shotIndex, "stroke_number", e.target.value)}
-				/>
-			</label> */}
 
 			<label className="label">
 				Start Distance

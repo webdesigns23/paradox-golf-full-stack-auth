@@ -1,32 +1,3 @@
-// import { Link } from "react-router-dom";
-
-// export default function RoundCard({round, handleDelete, handleUpdate}){
-	
-
-// 	return(
-// 		<div className="round-card">
-// 			<h2>Course: {round.course_name}</h2>
-// 			<h3>{round.date}</h3>
-// 			<p>Tee: {round.tee} - {round.tee_name} </p>
-// 			<p>Holes: {round.holes}</p>
-// 			<p>Notes: {round.notes}</p>	
-
-// 			<Link to={`/rounds/${round.id}`}>
-// 				<button>Round Details</button>
-// 			</Link>	
-
-// 			<button className="delete_button" onClick={handleDelete}>
-// 				Remove Round
-// 			</button>
-// 			<button className="delete_button" onClick={handleDelete}>
-// 				Remove Round
-// 			</button>
-			
-// 		</div>
-// 	)
-// }
-
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
