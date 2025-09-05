@@ -11,7 +11,7 @@ export default function AddShotRows({shots=[], updateShot, onAdd, onRemove}) {
 				updateShot={updateShot}
 				onRemove={onRemove}/>
 			))}
-			<button type="button" onClick={onAdd}>Add Shot</button>
+			<button type="add_button" onClick={onAdd}>Add Shot</button>
 		</div>
 	)
 }

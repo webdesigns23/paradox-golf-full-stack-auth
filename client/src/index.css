@@ -39,6 +39,12 @@ html, body, #root {
 
 h1 {
   font-size: 3.2em;
+  color: whitesmoke;
+  text-shadow: 0 0 6px rgb(86, 230, 81);
+}
+
+/* h1 {
+  font-size: 3.2em;
   line-height: 1.1;
   color: white;
   padding: 20px;
@@ -52,7 +58,7 @@ h1 {
   0%   { box-shadow: 0 4px 8px aqua; }
   50%  { box-shadow: 0 4px 20px #39ff14; }
   100% { box-shadow: 0 4px 8px aqua; }
-}
+} */
 
 h2 {
   color: rgb(71, 217, 236);

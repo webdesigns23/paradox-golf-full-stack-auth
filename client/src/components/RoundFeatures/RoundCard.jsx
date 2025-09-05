@@ -68,8 +68,8 @@ export default function RoundCard({ round, handleDelete, handleUpdate }) {
         <Link to={`/rounds/${round.id}`}>
           <button>Round Details</button>
         </Link>
-        <button className="delete_button" onClick={handleDelete}>
-          Remove Round
+        <button className="remove_button" onClick={handleDelete}>
+          x
         </button>
       </div>
     </div>

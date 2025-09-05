@@ -10,7 +10,7 @@ export default function ShotList(
 				<div key={shotIndex}> 
 					<div> 
 						<button className="remove_button" type="button" onClick={() => removeShotRow(holeIndex, shotIndex)}>
-							Remove Shot
+							x
 						</button>
 						<h3 className="h3">Shot {shot.stroke_number}</h3>
 					</div>
