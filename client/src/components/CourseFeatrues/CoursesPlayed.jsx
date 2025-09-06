@@ -1,5 +1,6 @@
 import { useContext, useMemo } from "react";
 import { RoundContext } from "../../context/RoundContext";
+import "../../styles/Stats.css"
 
 
 export default function CoursesPlayed() {
@@ -41,20 +42,22 @@ export default function CoursesPlayed() {
   if (error) return <div className="error">Error: {error}</div>;
   if (!courses.length) return <div>No courses yet</div>;
 
-  return (
-    <div className="courses">
-      <h1>Courses I've Played</h1>
-      <ul className="course-list">
-        {courses.map((c) => (
-          <li key={c.key} className="course-item">
-            <div className="course-name">{c.course_name}</div>
-            <div className="course-item">
-              Rounds: {c.roundsCount} - Last played:{" "}
-              {c.lastPlayed.toLocaleDateString()}
-            </div>
-          </li>
-        ))}
-      </ul>
+return (
+  <section className="stats_section">
+    <h2>Courses Played</h2>
+    <div className="stats_grid">
+      {courses.map((c) => (
+        <div key={c.key} className="stat_card">
+          <div className="stat_label">{c.course_name}</div>
+          <div className="stat_value">
+            Rounds: {c.roundsCount}
+          </div>
+          <div className="stat_value">
+            Last played: {c.lastPlayed.toLocaleDateString()}
+          </div>
+        </div>
+      ))}
     </div>
-  );
+  </section>
+);
 }

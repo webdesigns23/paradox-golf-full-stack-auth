@@ -40,13 +40,14 @@ html, body, #root {
 h1 {
   font-size: 3.2em;
   color: whitesmoke;
-  text-shadow: 0 0 6px rgb(86, 230, 81);
+  text-shadow: 0 4px 6px rgb(94, 221, 90);
 }
 
 h2 {
-  color: rgb(80, 243, 47);
+  color: rgb(219, 239, 244);
   text-transform: capitalize;
-  text-shadow: 0 0 6px rgb(230, 104, 81)
+  text-shadow: 0 0 6px rgb(20, 178, 241)
+  
 }
 
 p {

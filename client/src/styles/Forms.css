@@ -75,18 +75,6 @@ textarea.textarea {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /* Login Form */
 .login_form, .signup_form {
   max-width: 350px;
@@ -159,7 +147,7 @@ textarea.textarea {
 }
 
 .login_logo img {
-  animation: portalSpin 30s linear infinite;
+  animation: portalSpin 8s linear infinite;
   transform-origin: center;
 }
 
