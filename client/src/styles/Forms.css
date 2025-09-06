@@ -103,7 +103,7 @@ textarea.textarea {
   border-radius: 0.4rem;
   border: 2px solid #18b3da;
   background: #f4f8f8;
-  color: #e0ffe9;
+  color: #000000;
   font-size: 0.9rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
