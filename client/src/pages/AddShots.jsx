@@ -12,7 +12,6 @@ export default function AddShots(){
 	const [ holes, setHoles] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState(null);
-	const [showShots, setShowShots] = useState(false);
 
 	//reuseability for submit POST fetch
 	const token = localStorage.getItem("token");
@@ -37,7 +36,7 @@ export default function AddShots(){
 
 	//Load hole data from round to add holes too
 	useEffect(() => {
-	if (!showShots) return;
+
     (async () => {
       try {
         setLoading(true);
@@ -124,50 +123,42 @@ export default function AddShots(){
   if (loading) return <p>Loading…</p>;
   if (error) return <p className="error">Error: {error}</p>;
 
-   	return(
+	return (
 		<div>
 			<div>
 				<h1>Would you like to add your shot distances?</h1>
+				<Link to={`/rounds`}>
+					<button>No Thanks</button>
+				</Link>
+
 				<h2>"Ooooh, it's a little teedious! </h2>
 				<h3>But hey, helping you log those shot distances gives me purpose ...and better stats mean a better golf game!</h3>
 				<h2> I'm Mr. Meeseeks, look at meee!"</h2>
 				<img src={m} />
 				<br></br>
-				<Link to={`/rounds`}>
-					<button>No Thanks</button> 
-				</Link>		
-
-				{!showShots && (
-					<button type="button" onClick={() => setShowShots(true)}>
-						+ Add Shots
-					</button>
-				)}	
 			</div>
 			{error && <p className="error">Error: {error}</p>}
-			{showShots && loading && <p>Loading…</p>}
-
-			{showShots && !loading && (
-				<div>
-					{holes.length === 0 ? (
-						<p>No holes found for this round.</p>
-					) : (
-						holes.map((hole, index) => (
-							<div key={hole.id ?? index}>
-								<h3>Hole {hole.hole_number}</h3>
-								<ShotContainer					
-									hole={hole}
-									holeIndex={index}
-									setHolesData={setHoles}
-								/>
-							</div>
-						))
-					)}
-					<button type="button" 
+			<div>
+				{holes.length === 0 ? (
+					<p>No holes found for this round.</p>
+				) : (
+					holes.map((hole, index) => (
+						<div key={hole.id ?? index}>
+							<h3>Hole {hole.hole_number}</h3>
+							<ShotContainer
+								hole={hole}
+								holeIndex={index}
+								setHolesData={setHoles}
+							/>
+						</div>
+					))
+				)}
+				<button type="button"
 					onClick={handleSaveShots}>
-						Save Shots
-					</button>	
-				</div>
-			)}
+					Save Shots
+				</button>
+			</div>
+
 		</div>
 	)
 }
