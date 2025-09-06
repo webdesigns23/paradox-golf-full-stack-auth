@@ -9,3 +9,7 @@ body {
   margin-left: 150px;
   background: black;
 }
+
+img {
+  border-radius: 10px;
+}

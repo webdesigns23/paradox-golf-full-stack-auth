@@ -44,6 +44,7 @@ h1 {
 }
 
 h2 {
+  font-size: 2em;
   color: rgb(219, 239, 244);
   text-transform: capitalize;
   text-shadow: 0 0 6px rgb(20, 178, 241)

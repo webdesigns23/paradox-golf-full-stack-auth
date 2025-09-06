@@ -21,7 +21,7 @@ export default function RoundStats() {
 
 			<div className="stat_card">
 			<span className="stat_label">Rounds Played: </span>
-			<span className="stat_card">{roundsPlayed}</span>
+			<span className="stat_value">{roundsPlayed}</span>
 
 			</div>
 

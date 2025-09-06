@@ -6,7 +6,6 @@ import Home from "./pages/Home";
 import About from "./pages/About"
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-import Courses from "./pages/Courses";
 import Rounds from "./pages/Rounds";
 import AddRound from "./pages/AddRound";
 import AddShots from "./pages/AddShots";
@@ -69,7 +68,6 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home user={user}/>} />
           <Route path="/dashboard" element={<Dashboard user={user} />} />
-          <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />

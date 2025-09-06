@@ -1,6 +1,6 @@
 .stats_section {
   margin:1.5rem auto;
-  max-width:1100px;
+  max-width:1200px;
   padding:0 1rem;
 }
 
@@ -29,12 +29,13 @@
 .stat_label {
   font-size:20px;
   text-transform:uppercase;
-  color:blue;
+  color:rgb(17, 121, 218);
+  border-bottom: 2px solid rgb(131, 182, 223);
 }
 .stat_value {
-  font-weight:700;
-  font-size:clamp(1.25rem,1rem + 1vw,2rem);
-  line-height:1.1;
+  color: rgb(102, 109, 109);
+  font-size: 20px;
+  font-weight:500;
 }
 
 
@@ -53,5 +54,3 @@ div {
 	margin-bottom: 50px;
 }
 
-
-/* courses played */

@@ -28,7 +28,6 @@ export default function NavBar({user, setUser}){
 		<ul className="nav-links">
 			<NavLink to="/">Home</NavLink>
 			<NavLink to="/dashboard">Dashboard</NavLink>
-			<NavLink to="/courses">Courses</NavLink>
 			<NavLink to="/rounds">Rounds</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
 			<NavLink to="/about">About</NavLink>
