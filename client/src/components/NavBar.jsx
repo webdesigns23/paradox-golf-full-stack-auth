@@ -31,6 +31,7 @@ export default function NavBar({user, setUser}){
 			<NavLink to="/courses">Courses</NavLink>
 			<NavLink to="/rounds">Rounds</NavLink>
 			<NavLink to="/challenges">Challenges</NavLink>
+			<NavLink to="/about">About</NavLink>
 		</ul>
     </nav>
 	)

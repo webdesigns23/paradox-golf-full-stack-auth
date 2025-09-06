@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import { RoundsProvider } from "./context/RoundContext";
-import Home from './pages/Home';
+import Home from "./pages/Home";
+import About from "./pages/About"
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Courses from "./pages/Courses";
@@ -66,14 +67,15 @@ export default function App() {
       <BrowserRouter>
       <NavBar user={user} setUser={setUser} />
         <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/dashboard" element={<Dashboard user={user} setUser={setUser} />} />
+          <Route path="/" element={<Home user={user}/>} />
+          <Route path="/dashboard" element={<Dashboard user={user} />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/rounds" element={<Rounds />} />
           <Route path="/rounds/new" element={<AddRound />} />
           <Route path="/rounds/:id" element={<RoundDetails />} />
           <Route path="/rounds/:id/shots" element={<AddShots />} />
           <Route path="/challenges" element={<Challenges />} />
+          <Route path="/about" element={<About />} />
         </Routes>
       </BrowserRouter>
     </RoundsProvider>

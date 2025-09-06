@@ -1,14 +1,14 @@
-import meeseek from "../assets/images/meeseeks/meeseek.PNG"
+import meeseekTips from "../assets/images/meeseeks/meeseek_tips.jpeg"
 
-export default function Home() {
+export default function Home({user}) {
 	return(
 		<>
-			<h1>Paradox Golf</h1>
-			<h2>Track your golf game and embrace the contradiction</h2>
+			<h1>"hi {user?.username}!"</h1>
+			<h2 className="tagline">“I'm Mr. Meeseeks! Look at me!” ...your friendly golf sidekick.</h2>
+			<h2>"Want me to help you get 2 strokes off your golf game!"</h2>
 
-			<img src={meeseek} width="60%" alt="meeseeks on golf course"/>
-
-			<p>Golf is a game of paradoxes. It always seems like the harder you swing, the worse it gets, the shortest putt can feel like the hardest, and one perfect shot can erase 17 terrible holes or vice versa. Paradox Golf is designed for both casual and serious golfers looking for a fun and engaging way to improve their game. Paradox Golf keeps you aware of your numbers, while also keeping your round lighthearted as golf rounds can sometimes feel a bit absurd.</p>
+			<img src={meeseekTips} width="40%" alt="meeseeks on golf course"/>
+			
 		</>
 	);
 };
