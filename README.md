@@ -3,14 +3,26 @@
 A Meeseeks themed golf tracker application that provides players with a fun and engaging way to track rounds, monitor progress, and challenge themselves without feeling weighed down by golf’s frustrations. Full-stack application built with Python Flask backend and React frontend.
 
 # Features:
-1. Users are able to create an account to personally manage their wine collection.
-	- User can Sign up by creating a username, password, and choose from a rick and morty character image.
-	- Users are able to Login/Logout
+Paradox Golf makes improvement enjoyable by combining a playful design with serious insights. Users will see a Meeseeks-themed digital coach that:
 
-2. Once logged in, they are able to view, update, create, or delete their golf stats. 
+*	Tracks golf courses, scores, and personal stats (future upgrades for strokes gained analysis with Golf Data API, Couse data with Golf Course Data API)
+*	Analyzes trends across rounds to show progress (average puts, strokes, scores)
+*	Celebrates the wins, however big or small, to reinforce motivation
+*	Uses authentication to ensure only the user can edit or delete their round data
 
-3. Users record the following info about their round:
-	- Course
+
+# Application Flow:
+1.	Log In / Sign Up/ Register
+-	User creates an account to track rounds or registers
+2.	Play a round and log course score card and shots
+-	Add courses manually or look them up on course search.
+-	Log rounds hole-by-hole (tee box, strokes, putts, fairways, greens)
+3.	Track & Improve
+-	View stats on dashboard
+-	See personalized insights and round highlights
+-	View milestones and round highlights
+4.	Logout
+
 
 # Tools and Resources Featured in this Project:
 - [GitHub Repo](https://github.com/webdesigns23/paradox-golf-full-stack-auth.git)
@@ -22,6 +34,7 @@ A Meeseeks themed golf tracker application that provides players with a fun and 
 - React
 - React-Router
 - Node.js
+- [API for course information](golfcourseapi.com)
 
 # Set Up and Installation:
 1. Fork and clone the GitHub Repo
@@ -73,6 +86,9 @@ npm install
 npm start
 ```
 
+# Entity Relationship Diagram:
+![Paradox Golf ERD](client/src/assets/ERD/pg_erd.png)
+
 # API Endpoints and Functionality:
 ## Authorization/ Authentication:
 `POST /signup`
@@ -83,23 +99,51 @@ npm start
 * Generates a JWT 
 * embeds the user’s ID or role
 
-## Resource:
-`GET /`
-* 
+`GET /me`
+* Checks login state on page refresh
+* Uses JWT
 
-`POST /`
-* 
+## Round Resource:
+`GET /rounds`
+* Lists rounds
 
-`PATCH //<id>`
+`GET /rounds/<int:id>`
+* Lists specific round
+
+`POST /rounds`
+* Creates a round
+
+`PATCH /rounds/<id>`
 * Search by id
-* Update 
+* Updates Notes only
 
-`DELETE //<id>`
-* Delete
+`DELETE /rounds/<id>`
+* Delete a specific round
+
+## RoundHole Resource:
+`GET /rounds/<int:round_id>/holes`
+* Lists round holes
+
+`POST /rounds/<int:round_id>/holes`
+* Create a round hole
+
+## Shots Resource:
+`GET /rounds/<int:round_id>/holes/<int:hole_id>/shots`
+* Lists shots on round details
+
+`POST /rounds/<int:round_id>/holes/<int:hole_id>/shots`
+* Adds shots to a specific round
+
+## CourseSearch (external API) Resource:
+`GET /courses/search`
+* Searches for course info from GolfCourseAPI
+
+
 
 # Testing: 
 - Does not contain test files.
-- Test in Postman or by using application in browser and inspect
+- Test in Postman
+- Using application in browser and inspect
 
 # Commit and Push Git History if any adjustments to this code are made
 1. Add your changes to the staging area by executing
