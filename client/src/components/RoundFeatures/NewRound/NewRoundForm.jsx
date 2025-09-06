@@ -29,21 +29,21 @@ export default function NewRoundForm(){
     if (selection === "front9") {
       return Array.from({ length: 9 }, (_,i) => ({
         hole_number: i + 1,
-        par: 3,
+        par: 4,
         score: 1
       }));
     }
     if (selection === "back9") {
       return Array.from({ length: 9 }, (_,i) => ({
         hole_number: 10 + i,
-        par: 3,
+        par: 4,
         score: 1
       }));
     }
     if (selection === "18") {
       return Array.from({ length: 18 }, (_,i) => ({
         hole_number: i + 1,
-        par: 3,
+        par: 4,
         score: 1
       }));
     }

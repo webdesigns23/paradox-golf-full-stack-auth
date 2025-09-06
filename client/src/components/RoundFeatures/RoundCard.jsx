@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import "../../styles/Round.css"
 
 
 export default function RoundCard({ round, handleDelete, handleUpdate }) {
@@ -41,7 +42,7 @@ export default function RoundCard({ round, handleDelete, handleUpdate }) {
             style={{ marginLeft: "0.5rem" }}
             onClick={() => setEditing(true)}
           >
-            Edit
+            Edit Notes
           </button>
         </p>
       ) : (

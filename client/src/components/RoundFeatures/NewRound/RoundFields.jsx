@@ -51,6 +51,7 @@ export default function RoundFields({roundData, updateRound}) {
 					onChange={updateRound}
 					required
 				>
+					<option value="select">Select Tee...</option>
 					<option value="male">Mens Tees</option>
 					<option value="female">Ladies Tees</option>
 				</select>

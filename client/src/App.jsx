@@ -55,6 +55,7 @@ export default function App() {
   }
   
   if (checkAuth) return <div>  
+    <p>Initilizing Portal Travel.....</p>
     <img src={meeseekTip} width="95%" margin-top="200px" alt="meeseeks on golf course"/>
     <h1>Meeseeks Golf Tip #1</h1>
     </div>
