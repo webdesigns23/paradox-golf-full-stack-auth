@@ -146,6 +146,7 @@ textarea.textarea {
   border: ridge rgb(255, 240, 157);
 }
 
+/* PG Logo */
 .login_logo img {
   animation: portalSpin 8s linear infinite;
   transform-origin: center;

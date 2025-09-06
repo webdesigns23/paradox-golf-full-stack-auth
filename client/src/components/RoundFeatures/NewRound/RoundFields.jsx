@@ -19,18 +19,6 @@ export default function RoundFields({roundData, updateRound}) {
 			</label>
 
 			<label className="label">
-				Course #
-				<input className="input"
-					type="number"
-					name="course_external_id"
-					value={roundData.course_external_id}
-					onChange={updateRound}
-					placeholder="course #"
-					
-				/>
-			</label>
-
-			<label className="label">
 				Date
 				<input className="input"
 					type="date"
@@ -44,6 +32,7 @@ export default function RoundFields({roundData, updateRound}) {
 		
 			<label className="label">
 				Tee
+				<br></br>
 				<select className="input"
 					type="text"
 					name="tee"

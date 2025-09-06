@@ -35,57 +35,57 @@ export default function SearchCourses(){
 	}
   }
 
-	return(
-		<>
-			<h2>Course Search:</h2>
-			<div>
-				<form onSubmit={handleSearch}>
-					<input type="text"
-					value={query}
-					onChange={(e) => setQuery(e.target.value)}
-					placeholder="Search courses..."
-					/>
-					<button type="submit">Search</button>
-				</form>
+return (
+  <section className="course-search">
+    <h2 className="section-title">Course Search</h2>
 
-				<div className="courses">
-					{results.map((course) => (
-						<div key={course.id}>
-							<h2>{course?.course_name}</h2>
-							<p>Course # {course?.id}</p>
-							<p>{course.location?.address}</p>
+    <form className="search-form" onSubmit={handleSearch}>
+      <input
+        className="search-input"
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Search courses..."
+      />
+      <button className="search-btn" type="submit">Search</button>
+    </form>
 
-							{course.tees?.female && (
-							<div>
-								<h4>Female Tees</h4>
-								<ul className="course-list">
-									{course.tees.female.map((tee, i) => (
-										<li key={i} className="course-item">
-											{tee.tee_name} - {tee.total_yards} yards, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
-										</li>
-									))}
-								</ul>
-							</div>
-							)}	
+    <div className="course-results">
+      {results.map((course) => (
+        <div key={course.id} className="course-card">
+          <h3 className="course-name">{course.course_name}</h3>
+          <p className="course-location">{course.location?.address}</p>
 
-							{course.tees?.male && (
-							<div>
-								<h4>Male Tees</h4>
-								<ul className="course-list">
-									{course.tees.male.map((tee, i) => (
-										<li key={i} className="course-item">
-											{tee.tee_name} - {tee.total_yards} yards, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
-										</li>
-									))}
-								</ul>
-							</div>
-							)}	
-						</div>
-						)
-					)}
-				</div>
-			</div>
+          <div className="tee-grid">
+            {course.tees?.female && (
+              <div className="tee-column">
+                <h4>Female Tees</h4>
+                <ul className="tee-list">
+                  {course.tees.female.map((tee, i) => (
+                    <li key={i} className="tee-item">
+                      {tee.tee_name} — {tee.total_yards} yds, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
-		</>
-	)
+            {course.tees?.male && (
+              <div className="tee-column">
+                <h4>Male Tees</h4>
+                <ul className="tee-list">
+                  {course.tees.male.map((tee, i) => (
+                    <li key={i} className="tee-item">
+                      {tee.tee_name} — {tee.total_yards} yds, Par {tee.par_total}, Rating {tee.course_rating}, Slope {tee.slope_rating}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
 }
