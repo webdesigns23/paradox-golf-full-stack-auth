@@ -37,55 +37,74 @@ Paradox Golf makes improvement enjoyable by combining a playful design with seri
 - [API for course information](golfcourseapi.com)
 
 # Set Up and Installation:
-1. Fork and clone the GitHub Repo
+1. Getting Started:
+* Fork and clone the GitHub Repo
 ```bash
 git clone <repo_url>
+cd <project-directory>
 
 ```
-2. Set up your virtual environment of choice (virtualenv prefered)
+2. Set up Backend 
+* Set up your virtual environment of choice (virtualenv prefered)
 ```bash
+cd server
 virtualenv env1
 source env1/bin/activate
 ```
-3. Install PyPi dependencies using requiements.txt
+* Install PyPi dependencies in to the server directory using requiements.txt
 ```bash
 pip install -r requirements.txt
 ```
-4. Navigate into the server/ directory and set environment variables:
+3. Set up .env.local file
+* Adding a database url to .env.local file using Neon Postgres:
+	- [Log in to Neon account](https://neon.com/)
+	- Create a "New Project"
+	- Click "Connect"
+	- Copy your "connection string" and Paste into the .env.local file for DATABASE_URL
+
+* Create a JSON Web Token Secret Key and paste into .env.local file for JWT_SECRET_KEY
+
+* Create an API key for Golf Course information
+	- [Go to GolfCourseAPI](https://golfcourseapi.com/)
+	- On home page scroll down to view pricing and select desired level
+	- Complete necessary signup and recieve API key
+	- Copy and paste API key into .env.local file for GOLFCOURSE_API_KEY
+
+* Navigate into the server/ directory and set environment variables:
 ```bash
 cd server
 export FLASK_APP=app.py
 export FLASK_RUN_PORT=5555
 ```
-5. Create a migrations folder, run initial migration and update
+* Create a migrations folder, run initial migration and update with seed data
 ```bash
 cd server
 flask db init
 flask db migrate -m "initial migration"
-flask db upgrade
+flask db upgrade 
 ```
-6. Populate database with initial data
+* Populate database with initial data(optional), can add your own data by using the app
 ```bash
 python seed.py
+```
+3. Set Up Frontend
+* Install necessary dependencies
+```bash
+npm install
 ```
 # Running Back-end of Application:
 Should run on port 5555 to match proxy in package.json
 You can run the Flask server with:
 ```bash
+cd server
 python app.py
 ```
-
 # Running Front-end of Application:
 To run the React application
-1. Install dependencies
-```bash
-npm install
-```
 2. Start the application
 ```bash
 npm start
 ```
-
 # Entity Relationship Diagram:
 ![Paradox Golf ERD](client/src/assets/ERD/pg_erd.png)
 
