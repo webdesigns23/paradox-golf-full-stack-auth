@@ -92,16 +92,14 @@ python seed.py
 ```bash
 npm install
 ```
-# Running Back-end of Application:
-Should run on port 5555 to match proxy in package.json
-You can run the Flask server with:
+# Running Back-end of Application
+Should run on port 5555 to match proxy in package.json, you can run the Flask server with:
 ```bash
 cd server
 python app.py
 ```
-# Running Front-end of Application:
-To run the React application
-2. Start the application
+# Running Front-end of Application
+To start the React application:
 ```bash
 npm start
 ```
