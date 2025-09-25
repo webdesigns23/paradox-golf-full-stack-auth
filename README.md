@@ -55,7 +55,7 @@ source env1/bin/activate
 ```bash
 pip install -r requirements.txt
 ```
-3. Set up .env.local file
+3. Set up .env or .env.local file
 * Copy .env.example to your .env or .env.local file
 
 * Adding your database url to .env or .env.local file using Neon Postgres:
@@ -173,3 +173,7 @@ git add .
 git commit -m "Your commit message"
 git push origin main
 ```
+
+#Author and Project Context
+* Created by: Sharmaine Perea
+* Project Created for the Flatirons School Software Development Program. Capstone project to demonstrate full-stack development skills with authorization. 
