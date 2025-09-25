@@ -56,19 +56,21 @@ source env1/bin/activate
 pip install -r requirements.txt
 ```
 3. Set up .env.local file
-* Adding a database url to .env.local file using Neon Postgres:
+* Copy .env.example to your .env or .env.local file
+
+* Adding your database url to .env or .env.local file using Neon Postgres:
 	- [Log in to Neon account](https://neon.com/)
 	- Create a "New Project"
 	- Click "Connect"
 	- Copy your "connection string" and Paste into the .env.local file for DATABASE_URL
 
-* Create a JSON Web Token Secret Key and paste into .env.local file for JWT_SECRET_KEY
+* Create a JSON Web Token Secret Key and paste into .env or .env.local file for JWT_SECRET_KEY
 
 * Create an API key for Golf Course information
 	- [Go to GolfCourseAPI](https://golfcourseapi.com/)
 	- On home page scroll down to view pricing and select desired level
 	- Complete necessary signup and recieve API key
-	- Copy and paste API key into .env.local file for GOLFCOURSE_API_KEY
+	- Copy and paste API key into .env or .env.local file for GOLFCOURSE_API_KEY
 
 * Navigate into the server/ directory and set environment variables:
 ```bash
@@ -99,9 +101,9 @@ cd server
 python app.py
 ```
 # Running Front-end of Application
-To start the React application:
+To run the React application:
 ```bash
-npm start
+npm run dev
 ```
 # Entity Relationship Diagram:
 ![Paradox Golf ERD](client/src/assets/ERD/pg_erd.png)
@@ -154,7 +156,6 @@ npm start
 ## CourseSearch (external API) Resource:
 `GET /courses/search`
 * Searches for course info from GolfCourseAPI
-
 
 
 # Testing: 
