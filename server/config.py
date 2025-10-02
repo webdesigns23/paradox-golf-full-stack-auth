@@ -13,6 +13,7 @@ from datetime import timedelta
 load_dotenv()
 
 app = Flask(__name__)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
@@ -26,7 +27,7 @@ GOLFCOURSE_API_KEY = os.getenv("GOLFCOURSE_API_KEY", "")
 
 ALLOWED_ORIGINS = {"http://localhost:5173", "http://127.0.0.1:5173"}
 
-# So front can talk to back with React
+# connect react to flask
 CORS(app,
 	resources={r"/*": {"origins": list(ALLOWED_ORIGINS)}}, 
 	supports_credentials=False,
