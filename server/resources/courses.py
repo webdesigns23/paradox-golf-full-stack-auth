@@ -44,8 +44,34 @@ class CourseSearch(Resource):
         except Exception as e:
             return {"error": f"Server error: {e}"}, 500
 
+# Get full course details (external API)
+class CourseDetail(Resource):
+    @jwt_required()
+    def get(self, course_id):
+        url = f"{GOLFCOURSE_API_BASE}/courses/{course_id}"
+        headers = {
+            "Authorization": f"Key {GOLFCOURSE_API_KEY}",
+            "Accept": "application/json",
+        }
+
+        try:
+            resp = requests.get(url, headers=headers, timeout=10)
+            resp.raise_for_status()
+            data = resp.json() if resp.content else {}
+            course = data.get("course") or data
+            return course, 200
+
+        except requests.exceptions.HTTPError as e:
+            status = e.response.status_code if e.response is not None else 502
+            body = e.response.text[:300] if e.response is not None else ""
+            return {"error": "Upstream error", "status": status, "body": body}, 502
+        except Exception as e:
+            return {"error": f"Server error: {e}"}, 500
+
+
 
 # API Endpoints
 def register_courses_resources(api):
     api.add_resource(CourseSearch, '/courses/search')
+    api.add_resource(CourseDetail, '/courses/<string:course_id>')
 

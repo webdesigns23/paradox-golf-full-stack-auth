@@ -1,5 +1,5 @@
 import NewRoundForm from "../components/RoundFeatures/NewRound/NewRoundForm"
-import SearchCourses from "../components/CourseFeatrues/SearchCourse"
+import SearchCourses from "../components/CourseFeatures/SearchCourse"
 
 export default function AddRound() {
 	return (

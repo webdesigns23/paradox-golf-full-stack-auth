@@ -89,7 +89,7 @@ flask db upgrade
 ```bash
 python seed.py
 ```
-3. Set Up Frontend
+4. Set Up Frontend
 * Install necessary dependencies
 ```bash
 npm install

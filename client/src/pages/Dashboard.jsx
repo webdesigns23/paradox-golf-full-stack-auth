@@ -1,5 +1,5 @@
 import AllStats from "../components/StatsFeature/AllStats"
-import CoursesPlayed from "../components/CourseFeatrues/CoursesPlayed"
+import CoursesPlayed from "../components/CourseFeatures/CoursesPlayed"
 import meeseekb from "../assets/images/meeseeks/meeseekb.PNG";
 import "../styles/Stats.css"
 
